@@ -1,0 +1,70 @@
+
+
+{% extends 'boutique/base.html' %}
+<!-- {% block albums_active %}active{% endblock %} -->
+
+{% block body %}
+<div class="albums-container container-fluid">
+
+    <!-- Shops -->
+    <div class="row">
+        <div class="col-sm-12">
+            <!-- <h3>{{ user.username }}'s Albums</h3> -->
+        </div>
+
+        {% if all_shops %}
+            {% for shop in all_shops %}
+                <div class="col-sm-4 col-lg-2">
+                    <div class="thumbnail">
+
+						<!--Shop LOGO -->
+						<a href="{% url 'boutique:detail' shop.id %}">
+       
+                            <img src="{{ shop.shop_logo.url}}" class="img-responsive">
+                        </a>
+
+                       <div>
+                        <div class="caption">
+                            <h2>{{ shop.shop_name}}</h2>
+                            <h5>{{ shop.username }}</h5>
+
+
+
+                            <!-- View Details -->
+                            <a href="{% url 'boutique:detail' shop.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
+
+                            <!-- Delete -->
+                            <from action="{% url 'boutique:shop-delete' shop.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="shop_id" value="{{ shop.id }}"/>
+                            <button type="submit" class="btn btn-default btn-sm" >
+                            	<span class="glyphicon glyphicon-trash"></span>
+                           </button>
+                            </from>
+
+                        </div>
+                    </div>
+                </div>
+             <!--    {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %} -->
+            {% endfor %}
+        {% else %}
+            
+            <center><BIG><BIG><BIG>
+            <br>
+            <br>
+            <br>
+            <br>
+            <blink>
+            <a href="{% url 'boutique:shop-add' %}">
+                            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Shop
+                        </a></blink>
+            </center></BIG></BIG><BIG>
+                
+            
+            
+        {% endif %}
+
+    </div>
+   
+
+{% endblock %}

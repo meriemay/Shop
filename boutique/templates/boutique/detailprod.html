@@ -1,0 +1,145 @@
+{% extends 'boutique/base.html' %}
+{% block title %}Products{% endblock %}
+{% block shops_active %}active{% endblock %}
+
+
+{% block body %}
+	<div class="container-fluid products-container">
+		<div class="row">
+
+			<!-- Left Info -->
+			<div class="col-sm-4 col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<a href="{% url 'boutique:product_detail' shop.id %}">
+							<img src="{{ shop.shop_logo.url }}" class="img-responsive">
+						</a>
+
+						<h1>{{ shop.product_name }}</h1>
+							<small>{{ shop.product_price }}</small>
+						
+					</div>
+				</div>
+			</div>	
+			<!-- Right Info -->
+			<div class="col-sm-8 col-md-9">
+
+				<ul class="nav nav-pills" style="margin-bottom: 10px;">
+			
+
+
+						<!-- Add a new product -->
+						
+					
+					<!-- <li><a href="{% url 'boutique:prod-add' shop.id %}">Add  New Product </a></li></ul> -->
+
+					
+
+
+
+										<div class="panel panel-default">
+						<div class="panel-body">
+							<center><h3><font face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black">All Products</font></h3></center>
+
+							<table class="table">
+								<thread>
+								
+								<tr bgcolor="#cce6ff"><font color="red">
+									<th>Name</th>
+									<th>category</th>
+									<th>Price</th>
+									<th>picture</th>
+									<th></th>
+								</tr>
+								</thread>	
+								{% for product in shop.product_set.all %}
+  
+   <TR>
+
+		<label for="product{{ forloop.counter }}">
+
+			<TD>{{ product.product_name }} {{ product.boutique.id }}</TD>
+			<TD>{{ product.product_category }}</TD>
+			<TD>{{ product.product_price }}</TD>
+	  
+			<TD><img src="{{ product.product_logo.url }}" width="200" height="200" class="img-responsive"></TD>
+
+			
+
+			<TD><div>
+			<form action="{% url 'boutique:edit_product' shop.id product.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}" />
+            <button type="submit" class="btn btn-primary btn-sm">
+            <span class="glyphicon glyphicon-edit"></span> Edit
+            </button>
+            </form>
+
+			<!-- <a href="#" class="btn btn-primary btn-sm" role="button">Edit Product</a> --> 
+			<a class="btn btn-primary btn-sm"   href="{% url 'boutique:duplicate_product' product.id %}">duplicate</a>
+			<!-- <a class="btn btn-primary btn-sm"   href="{% url 'boutique:delete_product' shop.id product.id %}">duplicate</a> -->
+
+  			<form action="{% url 'boutique:delete_product' shop.id product.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}" />
+            <button type="submit" class="btn btn-primary btn-sm">
+            <span class="glyphicon glyphicon-remove"></span> Delete
+            </button>
+            </form>
+			 </div></TD>
+
+		</label>
+	</TR>
+
+{% endfor %} 
+</TABLE>		
+
+<!--  <a href="{% url 'boutique:prod-add' %}" class="btn btn-primary btn-sm" role="button">Add Product</a>
+	
+<TABLE border>
+  <TR><TH>Name</TH><TH>category</TH><TH>price</TH></TR>
+{% for product in shop.product_set.all %}
+  
+   <TR>
+
+		<label for="product{{ forloop.counter }}">
+
+			<TD>{{ product.product_name }}</TD>
+			<TD>{{ product.product_category }}</TD>
+			<TD>{{ product.product_price }}</TD>
+
+		</label>
+	</TR>
+{% endfor %} 
+</TABLE> -->
+
+
+ 
+
+		
+		
+	<!-- <img src="{{ shop.shop_logo }}" style="width:200px; height:200px;">
+
+	<h1>{{ shop.shop_name }}</h1> -->
+	<!-- <h3>{{ shop.username }}</h3> -->
+</div>
+</div>
+
+	{% if error_message %}
+		<p><strong>{{ error_message }}</strong></p>
+	{% endif %}
+
+
+
+
+<!-- 		{% csrf_token %}
+		{% for product in shop.product_set.all %}
+			<input type="radio" id="product{{ forloop.counter }}" name="product" value="{{ product.id}}" />
+			<li>
+			<label for="product{{ forloop.counter }}">
+				{{ product.product_name }}
+			</label><br>
+			</li>
+		{% endfor %}  -->
+{% endblock %}
+</div>

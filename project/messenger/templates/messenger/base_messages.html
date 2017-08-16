@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <link href="{% static 'css/messages.css' %}" rel="stylesheet">
+  <script src="{% static 'js/messages.js' %}"></script>
+  <script src="{% static 'js/jquery.typeahead.bundle.js' %}"></script>
+
+
+{% endblock head %}
+
+{% block main %}
+  <div class="page-header">
+  <br>
+    <a href="{% url 'new_message' %}" class="btn btn-primary pull-right">New message</a>
+    <h1>{% block page_header %}{% endblock %}</h1>
+  </div>
+
+  <div class="row" style="margin-top: 1em">
+    <div class="col-md-3">
+      {% include 'messenger/includes/partial_conversations.html' with conversations=conversations active=active %}
+    </div>
+    <div class="col-md-9">
+      {% block container %}
+      {% endblock container %}
+    </div>
+  </div>
+{% endblock main %}

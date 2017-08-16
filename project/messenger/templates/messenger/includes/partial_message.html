@@ -1,0 +1,22 @@
+<li>
+  <img src="{{ message.from_user.profile.get_picture }}" class="picture">
+  <div>
+    <h5>
+      <small class="pull-right">
+        {{ message.date|date:'N d G:i' }}
+      </small>
+      <a href="#">
+        {{ message.from_user.profile.get_screen_name }}
+      </a>
+    </h5>
+    {{ message.message }}<br>
+    {% if message.picture.image %}
+    <img src="{{message.picture.image.url}}" class="img-responsive" style="width: 200px; float: left; margin-right: 300px; height:200px">
+    {% endif %}
+
+    {% if message.product %}
+    <img src="{{message.product.product_logo.url}}" class="img-responsive" style="width: 200px; float: left; margin-right: 300px; height:200px">
+    {% endif %}
+    
+  </div>
+</li>

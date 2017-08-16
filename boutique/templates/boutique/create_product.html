@@ -1,0 +1,62 @@
+{% extends 'boutique/base.html' %}
+{% block title %}Add a New Product{% endblock %}
+{% block shops_active %}active{% endblock %}
+
+{% block body %}
+<br><br><br><br>
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- Left Album Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                        <a href="{% url 'boutique:detail' shop.id %}">
+                            {% if shop.shop_logo %}
+                                <img src="{{ shop.shop_logo.url }}" class="img-responsive"></a>
+                                <h1>{{ shop.shop_name }} <br><small>{{ user.username }}</small></h1>
+                            {% else %}
+                                <h3>No image to display</h3>
+                            {% endif %}
+                        
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Product Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation"><a href="{% url 'boutique:detail' shop.id %}">View All</a></li>
+                <li role="presentation" class="active"><a href="{% url 'boutique:create_product' shop.id %}">Add New Product</a></li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>Add a New Product</h3>
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+                    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="shop" value="{{ shop }}">
+                        {% include 'boutique/form_template.html' %}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

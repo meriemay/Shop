@@ -1,0 +1,165 @@
+<style type="text/css">
+.picture {
+  width: 20px;
+  border-radius: 5px;
+  float: left;
+}
+
+</style>
+{% extends 'boutique/base.html' %}
+{% block products_active %}active{% endblock %}
+
+{% load staticfiles %}
+
+
+{% block body %}
+
+<br><br><br><br>
+<div class="shops-container container-fluid">
+
+    
+        <div class="row"> 
+
+                        <!-- ******* left ******* -->
+           <!--        
+            <div class="col-sm-4 col-md-1">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                </div></div></div>
+ -->
+    {% if products %}
+
+
+                       <!-- ****** Right ******* -->
+               
+            <div class="col-sm-8 col-md-12">
+            <div class="panel panel-default">
+            <div class="panel-body">
+
+                <h3><a href="{% url 'boutique:filtrer' %}"><font color="#800040" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black"> Products</font></a></h3>
+
+                {% for product in products %}
+
+                    {% if product.is_activate == True %} 
+                        <div class="col-sm-8 col-lg-3">
+                            <div class="thumbnail">
+                            <div class="caption">
+
+                            <a href="{% url 'boutique:discover_product' product.id %}" method= "post">
+                                <img src="{{ product.product_logo.url }}" class="img-responsive" style="width: 200px; float: left; margin-right: 200px; height:100px" />
+                            </a>
+                                <h3>{{ product.product_name}}</h3>
+                                
+                                <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
+                                
+                                {{ product.shop.shop_name }}
+                                <h5 style="display:inline; float:right;"><span class="glyphicon glyphicon-user"></span> {{ product.shop.user.username}} </h5>
+                                
+                                <h5>{{ product.product_price}} DT</span></h5>
+
+
+                                    <!--  Reactions -->
+                                    {% include 'reactions/reaction.html' %}
+                  
+
+
+                            
+                            </div>
+                            </div>
+                        </div>
+                    {% endif %}
+            
+        
+                {% endfor %}
+                <script src="{% static 'reaction/js/reactions.js' %}"></script>
+    {% else %}
+        <br><br><br><br><br>
+               
+        <div class="col-sm-8 col-md-9">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+               
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <center><FONT color="red"; size=5>There isn't any product activated now!<br>Please check it later<br>
+
+                    <img src={% static 'boutique/images/sad.png' %}>
+
+                    </FONT></center>
+
+                
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+    {% endif %}
+    
+     <div class="col-sm-8 col-md-12">
+            
+           
+            <h3><a href="{% url 'filtrer_posts'%}"><font color="#800040" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black">Posts</font></a></h3>
+            {% for post in posts %}
+            <div class="col-sm-8 col-lg-3">
+            <div class="thumbnail">
+            <div class="caption">
+            <img src="{{ user.profile.get_picture }}" class="picture">
+
+                <B>{{user.username}}</B><br>
+                {{post.user_post}}<br>
+                <img src="{{ post.picture_attached.url }}" class="img-responsive" style="width: 200px; float: left; margin-right: 200px; height:100px" />
+                <img src="{{post.category.picture.url}}" class="img-responsive" style="width: 25px; float: left; height:25px"><B> {{post.category.label}}</B>
+                
+
+
+               <br><br>
+
+                     <!-- Reactions: 'like' and 'dislike' -->
+                <div class="col-md-1">
+                <button data-id="{{ post.id }}" data-reaction="like" class="reaction-post like">
+                  <img src="{% static 'reaction/images/like.png' %}" alt="" width="25" height="25" data-toggle="tooltip" title="like" data-reaction="like"> 
+                </button>
+                </div>
+                
+                <span class="col-md-1" id="likes"></span>
+
+
+                <div class="col-md-1">
+                <button data-id="{{ post.id }}" data-reaction="dislike" class="reaction-post dislike">
+
+                  <img src="{% static 'reaction/images/dislike.jpg' %}" alt="" width="28" height="25" data-toggle="tooltip" title="dislike" data-id="{{ post.id }}">
+                </button>
+                
+                </div>
+                <span class="col-md-1" id="dislikes" ></span>
+                 
+                <br><br>
+               
+                
+
+                
+                <button ><a href="{% url 'commenter' post.id%}"><span class="glyphicon glyphicon-comment"></span> comment</a>
+                </button>
+             
+
+
+
+                </div></div></div>
+            {%endfor%}
+       
+            
+
+        </div>
+ <script src="{% static 'reaction/js/reactions_post.js' %}"></script>
+
+
+
+{% endblock %}
+

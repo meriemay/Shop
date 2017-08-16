@@ -1,0 +1,20 @@
+{% load i18n %}
+
+
+{% for comment in comments %}
+      <li class="clearfix" >
+     
+      <B>{{comment.user}}</B>
+        <div class="panel-body">
+        {{comment.user_comment}}<br>
+       
+        </div>
+        <small>{{ comment.date }}</small>
+        <div>
+          
+        </div>
+       
+      </li>
+    {% empty %}
+      <li>{% trans 'You have no post' %}</li>
+    {% endfor %}

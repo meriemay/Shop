@@ -1,0 +1,49 @@
+{% load staticfiles %}
+<div>
+<div class="col-md-1">
+<button data-id="{{ product.id }}" data-reaction="normal" class="reaction-button normal">
+  <img src="{% static 'reaction/images/normal1.gif' %}" alt="" width="25" height="25" data-toggle="tooltip" title="normal" data-reaction="normal" > 
+</button>
+</div>
+<span id="normals" class="col-md-1" ></span>
+
+<div class="col-md-1">
+<button data-id="{{ product.id }}" data-reaction="smile" class="reaction-button smile">
+  <img src="{% static 'reaction/images/smiley.gif' %}" alt="" width="28" height="25" data-toggle="tooltip" title="smile" data-id="{{ product.id }}">
+</button>
+</div>
+<span id="smile" class="col-md-1" ></span>
+
+<div class="col-md-1">
+<button data-id="{{ product.id }}" data-reaction="love" class="reaction-button love">
+	<img src="{% static 'reaction/images/love1.gif' %}" alt="" width="25" height="25" data-toggle="tooltip" title="love" data-id="{{ product.id }}">  
+</button>
+</div>
+<span id="love" class="col-md-1" ></span>
+
+<div class="col-md-2">
+<button data-id="{{ product.id }}" data-reaction="wish" class="reaction-button wish">
+  <img src="{% static 'reaction/images/wish.gif' %}" alt="" width="25" height="25" data-toggle="tooltip" title="wish" data-id="{{ product.id }}">
+</button>
+</div>
+<span id="wish" class="col-md-1" ></span>
+
+<br><br>
+<span class="badge pull-right" id="reactions">{{product.reaction_set.count}} </span>
+
+</div>
+
+<!-- <button type="button" id="share-buttons" class="btn btn-primary btn-sm">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8000/boutique/product/{{product.id}}" class="popup"><img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" data-toggle="tooltip" title="share"/></a>
+</button>
+ -->
+
+
+
+<!--  <a href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8000/boutique/product/{{product.id}}" data-toggle="tooltip" title="share" class="btn btn-primary"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Share</a> -->
+
+
+<button type="button" id="share-buttons" class="btn btn-primary btn-sm" >
+	<a href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8000/boutique/discover_product/{{product.id}}">
+	<img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="" width="25" height="25" data-toggle="tooltip" title="share" data-id="{{ product.id }}"></a>  
+</button>

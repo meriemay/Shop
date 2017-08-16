@@ -1,0 +1,77 @@
+<style type="text/css"> 
+.my_post{
+overflow-y: scroll;
+max-height: 350px;
+}
+</style>
+
+{% extends 'boutique/base.html' %}
+{% block title %}Add a New Comment{% endblock %}
+ {% load staticfiles %}
+
+
+{% load i18n %}
+{% load humanize %}
+
+{% block body %}
+<br><br><br><br>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-sm-offset-4 col-sm-12 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>Add a New Comment</h3>
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+                    <form class="form-horizontal" id="send_comment" role="form" data-post-id="{{post.id}}" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+
+                          {{form.user_comment}}
+                      
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" data-id="{{ post.id }}" data-reaction="comment" class="reaction-post comment" >Submit</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        
+
+       
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="post">
+                        
+    
+                    <ul class="all-posts" >
+                      <div class="my_post">
+
+                        {{ post.comment_set.count }}
+  
+                        {% include 'posts/discover_comment.html' with comments=post.comments.all %}
+                         
+                        <script>
+                      $('.my_post').scrollBottom($('.my_post')[0].scrollHeight);
+                      </script>
+
+                      </div>
+                      </ul>
+        
+
+
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>                   
+</div>
+
+      
+
+
+{% endblock %}

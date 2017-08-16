@@ -1,0 +1,169 @@
+{% extends 'boutique/base.html' %}
+{% block shops_active %}active{% endblock %}
+
+{% block body %}
+<br><br><br><br>
+<div class="shops-container container-fluid">
+
+    <!-- Shops -->
+    <div class="row">
+        <div class="col-sm-12">
+            <center><h3>Welcome <FONT color="deeppink"; size=7; face="Satisfy">{{ user.username }} </FONT> to your shop!!</h3></center><br>
+        </div>
+        {% if shops %}
+
+            {% for shop in shops %}
+                <div class="col-sm-4 col-lg-4">
+                    <div class="thumbnail">
+                        <a href="{% url 'boutique:detail' shop.id %}">
+                            <img src="{{ shop.shop_logo.url }}" class="img-responsive">
+                        </a><center>
+                        <div class="caption">
+                            <h2>{{ shop.shop_name}}</h2>
+                            <h4>{{ shop.username }}</h4>
+
+                            <!-- View Details -->
+                            <a href="{% url 'boutique:detail' shop.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
+                            
+                            <!-- Delete Shop-->
+                            <form action="{% url 'boutique:delete_shop' shop.id %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="shop_id" value="{{ shop.id }}" />
+                                <button type="submit" class="btn btn-default btn-sm">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </form>
+
+                            <!-- Edit product -->
+                            <form action="{% url 'boutique:edit_shop' shop.id %}" method="get" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="shop_id" value="{{ shop.id }}" />
+                                <button type="submit" class="btn btn-info btn-sm">
+                                    <span class="glyphicon glyphicon-edit"></span> Edit
+                                </button>
+                            </form>
+
+                            <!-- Favorite Album -->
+                           <!--  <a href="{% url 'boutique:favorite_shop' shop.id %}" class="btn btn-default btn-sm btn-favorite" role="button">
+                                <span class="glyphicon glyphicon-star {% if shop.is_favorite %}active{% endif %}"></span>
+                            </a>
+ -->
+                        </div></center>
+                    </div>
+                </div>
+                {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+            {% endfor %}
+    <div class="col-sm-4 col-md-7">      
+        <div class="panel panel-default">
+            <div class="panel-body">
+
+                            <!--  Carousel products -->
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                      <!-- Indicators -->
+                       
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
+                                
+                            <div class="item active">
+                              {% for shop in shops %}
+                              <center>
+                              <img src="{{ shop.shop_logo.url }}" alt="" class="img-responsive" style="width: 500px; height: 350px">
+                              </center>
+                              <div class="carousel-caption">
+                                <h3>My shop</h3>
+                                <p>{{shop.shop_name}}</p>
+                            </div>
+                              {% endfor %}
+                            </div>
+                        {% for product in shops.first.product_set.all %}
+                            <div class="item">
+                             <center>
+                              <img src="{{ product.product_logo.url }}" alt="" class="img-responsive" style="width: 500px; height: 350px">
+                              </center>
+                            </div>
+                           {% endfor%}      
+
+                        
+                        </div>
+                      <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                      <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </div>
+
+
+
+
+        </div></div></div>
+        {% else %}
+            <div class="col-sm-12">
+                <br><br><br><br><br><br>
+                <center><FONT color="black"; size=3>You want to create your own shop ?</FONT></center>
+                <br>
+                <a href="{% url 'boutique:create_shop' %}">
+                    <center><button type="button" class="btn btn-primary btn-lg">
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp; create a Shop
+                    </button></center>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+   <!--  If user searches and there are products
+    
+    {% if products %}
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Products</h3>
+            </div>
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Shop_Name</th>
+                                    <th>logo</th>
+                                    
+                                    <th>price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                    <tr>
+                                        <td>{{ product.product_name }}</td>
+                                        <td>{{ product.shop.shop_name }}</td>
+                                       
+                                       
+                                        <td>
+                                            <a href="{% url 'boutique:detail' product.shop.id %}">
+                                                <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; float: left; margin-right: 10px;" />
+                                            </a>
+                                            <a href="{% url 'boutique:detail' product.shop.id %}">{{ product.shop.shop_name }}</a>
+                                        </td>
+                                        <td>{{ product.product_price }}</td>
+                                            
+                                        
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %} -->
+
+
+
+
+</div>
+
+{% endblock %}

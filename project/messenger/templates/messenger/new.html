@@ -1,0 +1,59 @@
+{% extends 'messenger/base_messages.html' %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block title %}{% trans 'New message' %}{% endblock %}
+
+{% block page_header %}{% trans 'New message' %}{% endblock %}
+
+{% block container %}
+
+  <form class="form-horizontal" role="form" method="post" action="{% url 'send_message' %}" id="send" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="to" class="col-sm-1 control-label">To</label>
+      <div class="col-sm-11">
+        <input class="form-control typeahead" type="text" id="to" name="to">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="to" class="col-sm-1 control-label">Message</label>
+      <div class="col-sm-11">
+        <textarea class="form-control" id="message" name="message" placeholder="Write a message" rows="4">
+        </textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-11 col-sm-offset-1">
+        <button type="submit" class="btn btn-primary">Send</button>
+      </div>
+    </div>
+    <input type="file" name='image'>
+  </form>
+ <script type="text/javascript" >
+     $(function () {
+  $("#send").submit(function () {
+    var data=new FormData(this):
+    $.ajax({
+      url: '/messages/send/',
+      data: data,
+      cache: false,
+      type: 'post',
+      contentType= false,
+      processData= false,
+
+      success: function (data) {
+        $(".send-message").before(data);
+        $("input[name='message']").val('');
+        $("input[name='message']").focus();
+      }
+    });
+    return false;
+  });
+});
+     
+      
+    </script>
+
+  <script src="{% static 'js/messages.typehead.js' %}"></script> 
+{% endblock container %}

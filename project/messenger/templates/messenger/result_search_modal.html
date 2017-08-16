@@ -1,0 +1,76 @@
+
+         
+           {% for product in products %}
+
+
+
+                     
+                        <div class="col-sm-8 col-lg-4">
+                            <div class="thumbnail">
+                            <div class="caption">
+
+
+
+                           
+                            <a href="{% url 'boutique:discover_product' product.id %}" method= "post">
+                                <img src="{{ product.product_logo.url }}" class="img-responsive" style="width: 100px; float: left; margin-right: 100px; height:100px" />
+                            </a>
+                                <h3><B>{{ product.product_name}}</B></h3>
+                                
+                                <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
+                                
+                                {{ product.shop.shop_name }}
+                                <h5>({{ product.shop.user.username}})</h5>
+                                <h4><span class="label label-info">{{ product.product_price}} DT</span></h4>
+
+                               
+
+                
+                            </div>
+                            </div>
+                        </div>
+                   
+                    {% empty %} 
+            
+        
+                {% endfor %}
+
+  
+
+
+
+<script type="text/javascript">
+  $(function get_search_results(event) {
+    //var $pager = $('.pager')
+    var itemID = $(event.target).val();
+    
+    $.ajax({
+        type  : "GET",
+        async : false,
+        url   : '/messages/search_modal/',
+        data  :{
+         recherche: $("#recherche").val(),
+         to: $("#to").val(),
+         //page : page,
+       },
+        cache : false,
+        success: function(html) {
+             
+           $( "#modal-body" ).html( html );
+           //$pager.attr('data-current-page', page);
+          // $(".page").val(page);
+           // console.log(page)
+
+            /*  if (html === "") {
+                  $("#loader_message").html('<p>There were no results that match your search criteria</p>').show();
+              } else {
+                  $("#loader_message").html('Searching... Please wait <img src="http://www.example.com/monstroid/wp-content/uploads/2016/02/LoaderIcon.gif" alt="Loading">').show();
+              }  
+              window.busy = false; */
+        }
+      });
+
+
+
+})
+</script>

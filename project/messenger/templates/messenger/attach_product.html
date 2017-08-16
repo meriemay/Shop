@@ -1,0 +1,58 @@
+
+
+{% for product in products %}
+
+ 
+        <div class="col-sm-8 col-lg-2">
+          <div class="thumbnail">
+            <div class="caption">
+              <a href="{% url 'boutique:discover_product' product.id %}" method= "post">
+                <img src="{{ product.product_logo.url }}" class="img-responsive" style="width: 100px; float: left; margin-right: 100px; height:100px" />
+              </a>
+              <h4><B>{{ product.product_name}}</B></h4>
+                                  
+              <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
+                                  
+              {{ product.shop.shop_name }}
+              <h5>({{ product.shop.user.username}})</h5>
+              <h4><span class="label label-info">{{ product.product_price}} DT</span></h4>
+
+            <form class="form-horizontal" role="form" method="post" action="{% url 'send_product' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" id="product_id" value="{{ product.id }}">
+            <input type="hidden" name="to_user" id="to_user" value="{{ active }}">
+            <button type="submit" class="btn btn-primary btn-sm">Send product</button>
+            </form>
+            </div>
+          </div>
+        </div>
+                     
+{% empty %} 
+              
+{% endfor %}
+    
+
+
+<script type="text/javascript" >
+  $(function () {
+    $("#send").submit(function () {
+      var data=new FormData(this):
+      $.ajax({
+        url: '/messages/send/',
+        data: data,
+        cache: false,
+        type: 'post',
+        contentType= false,
+        processData= false,
+
+        success: function (data) {
+          $(".send-message").before(data);
+          $("input[name='message']").val('');
+          $("input[name='message']").focus();
+        }
+      });
+      return false;
+    });
+  });
+       
+</script>

@@ -1,0 +1,41 @@
+<style type="text/css"> 
+.my_post{
+overflow-y: scroll;
+max-height: 350px;
+}
+</style>
+
+{% load staticfiles %}
+{% load i18n %}
+{% load humanize %}
+
+{% block head %}
+  <link href="{% static 'css/post.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block main %}
+  <ul class="all-posts" >
+  <div class="my_post">
+    {% for post in posts %}
+      <li class="clearfix">
+      <img src="{{post.category.picture.url}}" height="35px" width="35px" >
+      <B>{{post.category.label}}</B>
+        <div class="panel-body">
+        {{post.user_post}}<br>
+        <img src="{{post.picture_attached.url}}" height="200px" width="200px">
+        </div>
+        <small>{{ post.date|naturaltime }}</small>
+        <div>
+          
+        </div>
+       
+      </li>
+    {% empty %}
+      <li>{% trans 'You have no post' %}</li>
+    {% endfor %}
+    <script>
+  $('.my_post').scrollBottom($('.my_post')[0].scrollHeight);
+  </script>
+  </div>
+  </ul>
+{% endblock main %}

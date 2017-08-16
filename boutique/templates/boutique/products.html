@@ -1,0 +1,73 @@
+{% extends 'boutique/base.html' %}
+{% block title %}All Products{% endblock %}
+{% block products_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid songs-container">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" {% if filter_by == 'all' %}class="active"{% endif %}><a href="{% url 'boutique:products' 'all' %}">View All</a></li>
+                <!-- <li role="presentation" {% if filter_by == 'favorites' %}class="active"{% endif %}><a href="{% url 'boutique:products' 'favorites' %}">Favorites</a></li> -->
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>   
+                                <th>Name</th>
+                                <th>Shop</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Type</th>
+                                <th>Picture</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in product_list %}
+                                <tr>
+                                    <td>{{ product.product_name }}</td>
+                                    <td>
+                                        <a href="{% url 'boutique:detail' product.shop.id %}">
+                                            <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
+                                        </a>
+                                        <a href="{% url 'boutique:detail' product.shop.id %}">{{ product.shop.shop_name }}</a>
+                                    </td>
+                                    <td>{{ product.category }}</td>
+                                    <td>{{ product.product_price }} DT</td>
+                                    <td>{{ product.product_type }}</td>
+                                    
+
+                                    
+                                    
+                                        <!-- <a target="_blank" href="{{ product.product_logo.url }}">
+                                            <button type="button" class="btn btn-success btn-xs">
+                                                <span class="glyphicon glyphicon-play"></span>&nbsp; Play
+                                            </button>
+                                        </a> -->
+                                    <td><img src="{{ product.product_logo.url }}" style="width:200px; height:200px;" class="img-responsive"></td>
+                                    <td>{{ product.date }}</td>
+                                      <!--   <a href="{% url 'boutique:favorite' product.id %}" class="btn-favorite"><span class="glyphicon glyphicon-star {% if product.is_favorite %}active{% endif %}"></span></a> -->
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

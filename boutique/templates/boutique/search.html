@@ -1,0 +1,101 @@
+ {% extends 'boutique/base.html' %}
+{% block shops_active %}active{% endblock %}
+
+{% block body %}
+<div class="shops-container container-fluid">
+
+    <!-- Shops -->
+    <div class="row">
+        
+        {% if shops %}
+            {% for shop in shops %}
+             <div class="col-sm-12">
+                <h3>Shops found</h3>
+            </div>
+                <div class="col-sm-4 col-lg-2">
+                    <div class="thumbnail">
+                        <a href="{% url 'boutique:detail' shop.id %}">
+                            <img src="{{ shop.shop_logo.url }}" class="img-responsive">
+                        </a>
+                        <div class="caption">
+                            <h2>{{ shop.shop_name}}</h2>
+                            <h4>{{ shop.username }}</h4>
+
+                            <!-- View Details -->
+
+                            <a href="{% url 'boutique:detail' shop.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
+
+                           <!--Delete Shop
+                            <form action="{% url 'boutique:delete_shop' shop.id %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="shop_id" value="{{ shop.id }}" />
+                                <button type="submit" class="btn btn-default btn-sm">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </form> -->
+
+                        
+ 
+                        </div>
+                    </div>
+                </div>
+                {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+            {% endfor %}
+            {% endif %}
+
+
+
+
+    {% if products %}
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>  Products found</h3>
+            </div>
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                            <tr bgcolor="#cce6ff"><font color="red">
+                                    <th>Product Name</th>
+                                    <th>Shop_Name</th>
+                                    <th>Logo</th>
+                                    <th>Type</th>                     
+                                    <th>Price</th>
+                                    <th>Category</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                    <tr>
+                                        <td>{{ product.product_name }}</td>
+                                       
+                                        <td>
+                                            <a href="{% url 'boutique:detail' product.shop.id %}">
+                                                <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; float: left; margin-right: 10px;" />
+                                            </a>
+                                            <a href="{% url 'boutique:detail' product.shop.id %}">{{ product.shop.shop_name }}</a>
+                                        </td>
+
+                                        
+                                        <td><img src="{{ product.product_logo.url }}" class="img-responsive" style="width: 200px; height: 200px" float: left; margin-right: 200px;" /> </td> 
+                                        <td>{{ product.product_type }}</td>  
+                                        <td>{{ product.product_price }}</td>
+                                        <td>{{ product.category }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-sm-12">
+                <br><br><br><br><br><br>
+                <center><FONT color="black"; size=6>0 shops found <br> 0 products found</FONT></center>
+                <br>             
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

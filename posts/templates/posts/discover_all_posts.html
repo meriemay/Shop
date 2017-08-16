@@ -1,0 +1,209 @@
+<style>
+    footer {
+        position: absolute;
+
+        bottom: 0px;
+        left: 190px;
+        top: 820px;
+    }
+
+    </style>
+{% extends 'boutique/base.html' %}
+{% block posts_active %}active{% endblock %}
+
+{% load staticfiles %}
+
+
+{% block body %}
+<body>
+<br><br><br><br>
+<div class="shops-container container-fluid">
+
+    
+        <div class="row"> 
+
+                        <!-- ******* left ******* -->
+                  
+            <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                <div class="center-block">
+                    {% if header1 %} <h4>    {{ header1 }}</h4> {% endif%}
+                   
+                </div>
+
+                    <form class="navbar-form navbar-left" role="search" method="get" action="{{ request.path}}" >
+                    {% for key, value in request.GET.items %}
+                          {% if key != 'page' and key != 'search' %}
+                          <div class="u-form-group">
+                            <input type="hidden" name="{{key}}" value="{{value}}" />
+                          </div>
+                           {% endif %}
+                    {% endfor %}
+
+
+                    <!-- <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="search">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div> -->
+                    </form>
+                
+
+                            <!-- Gategories -->
+                    <font face="Brush Script Std, Brush Script MT, cursive" size="6px" color="black">Categories</font>
+                    <div class="list-group, center-block">
+                     {% for category, value in counter %}
+                    <a href="{% url 'filtrer_posts' category.label %}?{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="list-group-item list-group-item-info"><img src="{{category.picture.url}}" style="width: 50px; float: left; margin-right: 20px; height:25px" > {{ category.label  }}<span class="badge">{{value}}</span></a>{% endfor %}</div></br>
+ 
+
+
+                    <!-- <div class="center-block">
+                        <ul>
+                    {% for category, value in counter %}
+                      <li><a href="{% url 'boutique:filtrer' category.label %}?{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ category.label  }} <span class="badge">{{value}}</span>
+
+                      </a></li>
+                    {% endfor %}
+                        </ul></div></br> -->
+
+
+
+
+                        
+
+                   
+                    
+                       
+
+                       
+            </div>
+        </div>
+    </div>
+
+
+    {% if posts %}
+
+
+                       <!-- ****** Right ******* -->
+               
+        <div class="col-sm-8 col-md-9">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+            </ul>
+
+            <div class="panel panel-default">
+            <div class="panel-body">
+
+                <center><h3><font color="#800040" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black">All Posts</font></h3></center><br><br>
+
+                {% for post in posts %}
+
+                   
+                        <div class="col-sm-8 col-lg-4">
+                            <div class="thumbnail">
+                            <div class="caption">
+
+                           
+                                <img src="{{ post.picture_attached.url }}" class="img-responsive" style="width: 300px; float: left; margin-right: 300px; height:200px" />
+                           
+                                <h2>{{ post.user_post}}</h2>
+                                
+                                <img src="{{ post.category.picture.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
+                                
+                                {{ post.category.label }}
+                                <h5 style="display:inline; float:right;"><span class="glyphicon glyphicon-user"></span> {{ post.category.label}} </h5>
+                                
+                                <h3><span class="label label-warning">{{ post.category.label}} DT</span></h3>
+
+
+                                    <!--  Reactions -->
+
+                           
+
+      
+                          <!--       <div display= inline-block>
+                                <a href="#"><span class="badge" id="unread-count">0</span>LIKE</a>
+                                <a href="#"><span class="badge" id="unread-count">0</span>wish</a>
+                                <a href="#"><span class="badge" id="unread-count">0</span>share</a>
+                                </div> -->
+                                          <!--   <li><a href="{% url 'inbox' %}"><span class="badge pull-right" id="unread-count">0</span> Inbox</a></li> -->
+                               
+
+                            
+                            </div>
+                            </div>
+                        </div>
+                
+            
+        
+                {% endfor %}
+ 
+    {% else %}
+        <br><br><br><br><br>
+               
+        <div class="col-sm-8 col-md-9">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+               
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <center><FONT color="red"; size=5>There isn't any post!<br>Please check it later<br>
+
+                    <img src={% static 'boutique/images/sad.png' %}>
+
+                    </FONT></center>
+
+                
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+    {% endif %}
+
+
+                <!-- Pagination -->
+
+
+
+<footer >
+
+{% if posts.has_other_pages %}
+    <ul class="pagination">
+        {% if posts.has_previous %}
+          <li><a href="?page={{ posts.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&laquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in posts.paginator.page_range %}
+          {% if posts.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li><a href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if posts.has_next %}
+          <li><a href="?page={{ posts.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&raquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>  
+{% endif %}
+    
+
+</footer >
+
+
+
+
+
+{% endblock %}
+

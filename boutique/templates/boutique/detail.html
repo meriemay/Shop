@@ -1,0 +1,141 @@
+
+{% extends 'boutique/base.html' %}
+{% block title %}{{ shop }}{% endblock %}
+{% block shops_active %}active{% endblock %}
+
+{% block body %}
+<br><br><br><br>
+<div class="container-fluid products-container">
+
+    <div class="row">
+
+        <!-- Left Product Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{% url 'boutique:detail' shop.id %}">
+                        {% if shop.shop_logo %}
+                            <img src="{{ shop.shop_logo.url }}" class="img-responsive">
+                        {% else %}
+                            <h3>No image to display</h3>
+                        {% endif %}
+                    </a>
+                    <h1>{{ shop.shop_name }} <br><small>{{ user.username }}</small></h1>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Right product Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" class="active"><a href="{% url 'boutique:detail' shop.id %}">View All</a></li>
+                <li role="presentation"><a href="{% url 'boutique:create_product' shop.id %}">Add New Product</a></li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <center><h3><font face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black">All Products</font></h3></center>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                        <thead>
+                        <tr bgcolor="#cce6ff"><font color="red">
+                        
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Logo</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for product in shop.product_set.all %}
+                            <tr>
+                                <td>{{ product.product_name }}</td>
+                                <td>{{ product.category }}<br>({{ product.product_type }})</td>
+                                <td>{{ product.product_price }} DT</td>
+                                   <!--  <a target="_blank" href="{{ product.product_logo.url }}">
+                                        <button type="button" class="btn btn-success btn-xs">
+                                            <span class="glyphicon glyphicon-play"></span>&nbsp; Play
+                                        </button>
+                                    </a> -->
+                                <td><img src="{{ product.product_logo.url }}" style="width: 200px; height: 200px" class="img-responsive"></td>
+                               
+                                    <!-- <a href="{% url 'boutique:favorite' product.id %}" class="btn-favorite"><span class="glyphicon glyphicon-star {% if product.is_favorite %}active{% endif %}"></span></a> -->
+
+                                <td> 
+                                                <!-- Duplicate product -->
+
+                                <br><br><br>
+
+                                <a class="btn btn-warning btn-sm"   href="{% url 'boutique:duplicate_product' product.id %}">
+                                <span class="glyphicon  glyphicon-repeat"></span>Duplicate</a>
+
+
+                                                 <!-- Edit product -->
+                                <form action="{% url 'boutique:edit_product' shop.id product.id %}" method="get" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.id }}" />
+                                <button type="submit" class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-edit"></span> Edit
+                                </button>
+                                </form>
+
+                                                  <!-- Delete product -->
+                                <form action="{% url 'boutique:delete_product' shop.id product.id %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.id }}" />
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?');">
+                                <span class="glyphicon glyphicon-remove"></span> Delete
+                                </button>
+                                </form>
+
+
+                                                <!--  Activate product -->
+
+                                <form action="{% url 'boutique:activate_product' shop.id product.id %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.id }}" />
+                                
+                                {% if product.is_activate == True %}
+                                <button type="submit" class="btn btn-basic active btn-sm">
+                                <span class="glyphicon glyphicon-ban-circle"></span> Desactivate 
+                                {% else %}
+                                <button type="submit" class="btn btn-success active btn-sm">
+                                <span class="glyphicon glyphicon-ok"></span> Activate
+                                {% endif %}
+
+                                </button>
+                                </form>
+                                 </div>
+
+
+                                   <!--  <form action="{% url 'boutique:delete_product' shop.id product.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{ product.id }}" />
+                                        <button type="submit" class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
+                                        </button> -->
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

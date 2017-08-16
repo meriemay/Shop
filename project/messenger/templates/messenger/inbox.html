@@ -1,0 +1,183 @@
+<style type="text/css"> 
+.conver{
+overflow-y: scroll;
+max-height: 350px;
+}
+</style>
+
+{% extends 'messenger/base_messages.html' %}
+{% load i18n %}
+
+{% block title %}{% trans 'Inbox' %}{% endblock %}
+
+{% block page_header %}{% trans 'Inbox' %}{% endblock %}
+
+{% block container %}
+  
+  {% if messages %}
+
+<div class="col-sm-8 col-md-9">
+<div class="panel panel-default">
+<div class="panel-body">
+
+  <ul class="conversation">
+  <div class="conver">
+    {% for message in messages %}
+      {% include 'messenger/includes/partial_message.html' with message=message %}
+    {% endfor %}
+  <script>
+  $('.conver').scrollTop($('.conver')[0].scrollHeight);
+  </script>
+  </div>
+    <li class="send-message">
+      <img src="{{ user.profile.get_picture }}" class="picture">
+
+      <div style="margin-top: .3em">
+
+      
+        <form role="form" id="send1" enctype="multipart/form-data" method="post" action="{% url 'send_message' %}" >
+          {% csrf_token %}
+
+          <input type="hidden" name="to"  value="{{ active }}">
+          
+          <input class="form-control" autofocus="autofocus" type="text" name="message"  placeholder="Write a message..." maxlength="1000" autocomplete="off">
+          <input type="file" name='image'>
+
+        </form>
+
+              
+      </div>
+    </li>
+
+            <!-- PopUp attach project -->
+
+
+<div class="form-group">
+  <div class="col-sm-11 col-sm-offset-1">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Attach product</button>
+  </div>
+</div>
+
+              <!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    
+          <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'search_modal'%}" id="recherche-modal">
+                  <!--   {% for key, value in request.GET.items %}
+                          {% if key != 'page' and key != 'search' %}
+                          <div class="u-form-group">
+                            <input type="hidden" name="{{key}}" value="{{value}}" />
+                          </div>
+                          {% endif %}
+                    {% endfor %} -->
+          
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" id="recherche" name="search" value="{{request.GET.search}}">
+            <div class="input-group-btn">
+              <button class="btn btn-default" type="submit" id="modal-search-button"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+          </div>
+          
+        </form>
+      </div>
+      
+      
+      
+      <div class="modal-body" id="modal-body1">  
+
+        {% include 'messenger/attach_product.html' with products=products %}
+      
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript" >
+  $(function () {
+    $("#send1").submit(function () {
+      var data=new FormData(this);
+      alert("okk")
+      $.ajax({
+        url: '/messages/send/',
+        data: data,
+        cache: false,
+        type: 'post',
+        contentType= false,
+        processData= false,
+
+        success: function (data) {
+          $(".send-message").before(data);
+          $("input[name='message']").val('');
+          $("input[name='message']").focus();
+        }
+      });
+      return false;
+    });
+  });
+</script>
+
+
+  </ul>
+</div>
+</div>
+</div>
+
+  {% else %}
+    <h4>Your inbox is empty!</h4>
+  {% endif %}
+
+
+
+<script type="text/javascript">
+  $(function () {
+    function get_search_results() {
+        //var $pager = $('.pager')
+        
+        $.ajax({
+            type  : "GET",
+            async : false,
+            url   : '/messages/search_modal/',
+            data  :{
+             search: $("#recherche").val(),
+            
+             //page : page,
+           },
+            cache : false,
+            success: function(html) {
+                 console.log(html);
+               $( "#modal-body1" ).html( html );
+               //$pager.attr('data-current-page', page);
+              // $(".page").val(page);
+               // console.log(page)
+
+                /*  if (html === "") {
+                      $("#loader_message").html('<p>There were no results that match your search criteria</p>').show();
+                  } else {
+                      $("#loader_message").html('Searching... Please wait <img src="http://www.example.com/monstroid/wp-content/uploads/2016/02/LoaderIcon.gif" alt="Loading">').show();
+                  }  
+                  window.busy = false; */
+            }
+          });
+      }
+      $("#recherche-modal").on("submit", function (e) {
+        e.preventDefault();
+        get_search_results();
+      });
+
+  });
+</script>
+
+
+{% endblock container %}

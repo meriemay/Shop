@@ -1,0 +1,47 @@
+{% extends 'boutique/base.html' %}
+{% block title %}Add a New Post{% endblock %}
+ {% load staticfiles %}
+
+{% block body %}
+<br><br><br><br>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-sm-offset-4 col-sm-12 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>Add a New Post</h3>
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+                    <form class="form-horizontal" id="send_post" role="form" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% include 'posts/form_template.html' %}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="post">
+                        
+                        {% include 'posts/discover_post.html' with post=post %}
+                        
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>                   
+</div>
+
+      
+
+
+{% endblock %}

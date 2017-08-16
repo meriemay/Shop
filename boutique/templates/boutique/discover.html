@@ -1,0 +1,314 @@
+{% extends 'boutique/base.html' %}
+{% block products_active %}active{% endblock %}
+
+{% load staticfiles %}
+
+
+{% block body %}
+
+<br><br><br><br>
+<div class="shops-container container-fluid">
+
+    
+        <div class="row"> 
+
+                        <!-- ******* left ******* -->
+                  
+            <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                <div class="center-block">
+                    {% if header1 %} <h4>    {{ header1 }}</h4> {% endif%}
+                    {% if header2 %} <h4>    {{ header2 }}</h4> {% endif%}
+                    {% if header3 %} <h4>    {{ header3 }}</h4> {% endif%}
+                    {% if header4 %} <h4>    {{ header4 }}</h4>{% endif%}
+                </div>
+
+                    <form class="navbar-form navbar-left" role="search" method="get" action="{{ request.path}}" >
+                    {% for key, value in request.GET.items %}
+                          {% if key != 'page' and key != 'search' %}
+                          <div class="u-form-group">
+                            <input type="hidden" name="{{key}}" value="{{value}}" />
+                          </div>
+                           {% endif %}
+                    {% endfor %}
+
+
+                    <!-- <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="search">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div> -->
+                    </form>
+                
+
+                            <!-- Gategories -->
+                    <font face="Brush Script Std, Brush Script MT, cursive" size="6px" color="black">Categories</font>
+                    <div class="list-group, center-block">
+                     {% for category, value in counter %}
+                    <a href="{% url 'boutique:filtrer' category.label %}?{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="list-group-item list-group-item-info">{{ category.label  }}<span class="badge">{{value}}</span></a>{% endfor %}</div></br>
+ 
+
+
+                    <!-- <div class="center-block">
+                        <ul>
+                    {% for category, value in counter %}
+                      <li><a href="{% url 'boutique:filtrer' category.label %}?{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ category.label  }} <span class="badge">{{value}}</span>
+
+                      </a></li>
+                    {% endfor %}
+                        </ul></div></br> -->
+
+
+
+
+                             <!--  Filter by price -->
+                        <center>
+                        <form action="{% url 'boutique:filtrer' %}" method="get" >
+                        {% csrf_token %}
+                         {% for key, value in request.GET.items %}
+                        {% if key != 'page' and key != 'min' and key != 'max' %}
+                        <div class="u-form-group">
+                            <input type="hidden" name="{{key}}" value="{{value}}" />
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        <input type="hidden" />
+                        <!-- <input name="min_slider" id="sliderLink" type="text" placeholder="min price" class="inline-block" style="width: 20px; height: 20px" /> -->
+                        <input id="ex2" name="slider" type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000" data-slider-step="5" data-slider-value="[0,1000]"/>
+                      <!--   <input name="max_slider" id="sliderLink2" type="text" placeholder="max price" class="inline-block" style="width: 20px; height: 20px"/> -->
+                        <br><br>
+                        <button type="submit" class="btn btn-primary btn-block" ><span class="glyphicon glyphicon-usd" ></span>    filter by price</button>
+                        <br>
+                        </form> </center>
+
+
+                    <!-- <form method="GET" class="price-filter" action="{{ request.path }}">         
+                        {% for key, value in request.GET.items %}
+                        {% if key != 'page' and key != 'min' and key != 'max' %}
+                        <div class="u-form-group">
+                            <input type="hidden" name="{{key}}" value="{{value}}" />
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+
+                        
+                                          
+                            
+                            <input name="min" id="sliderLink" type="text" placeholder="min price" class="center-block"/>
+                                              
+                            
+                            <input name="max" id="sliderLink2" type="text" placeholder="max price" class="center-block"/>   
+                            
+                        
+                            <br><br>
+                            <button type="submit" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-usd" ></span>    filter by price</button>
+                            <br>
+                            </form> -->
+                              
+                        
+                            
+                        
+                           
+
+                            
+                                                        
+                        
+                        <!-- <div class="row">
+                       
+                            <div class="u-form-group">            
+                                <br><br>
+                                  <input name="min" id="sliderLink" type="text" placeholder="min price" class="center-block" />
+                            </div>
+
+                              
+                            
+                              
+                            
+                            <div class="u-form-group">
+                                <input name="max" id="sliderLink2" type="text" placeholder="max price" class="center-block" />   
+                            </div>
+                        </div>
+
+                            <div class="u-form-group">
+                                <button type="submit" class="center-block"><span class="glyphicon glyphicon-usd"></span>  filter by price</button>
+                                <br>
+                            </div> -->
+                            
+
+                    
+                        <!-- filter by type -->
+
+                    <form method="GET" class="product_type_filter" action="{{ request.path }}">
+
+                    {% for key, value in request.GET.items %}
+                    {% if key != 'page' and key != 'product_type' %}
+                    <div class="u-form-group">
+                    <input type="hidden" name="{{key}}" value="{{value}}" />
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+            <!---->
+                    <select name="product_type" class="center-block" >
+                        <option value="choose">choose</option>
+                        <option value="Hand_Made">Hand_Made</option>
+                        <option value="Vintage">Vintage</option>
+                    </select>
+
+                    
+                    <button type="submit" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-list-alt"></span>   filter by type</button>
+                    <br>
+                    </form>
+
+                        <!-- Ordering by price -->
+
+                    <form method="GET" class="order" action="{{ request.path }}">
+                        {% for key, value in request.GET.items %}
+                        {% if key != 'page' and key != 'ordering' %}
+                        <div class="u-form-group">
+                          <input type="hidden" name="{{key}}" value="{{value}}" />
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+            <!---->
+                        <select name="ordering" class="center-block">
+                            <option value="recent">choose</option> 
+                            <option value="price_asc">price ASC </option>
+                            <option value="price_desc">price DESC</option>
+                        </select>
+
+            
+                        <button type="submit" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-sort"></span>  ordering by price</button>
+            
+                    </form>            
+            </div>
+        </div>
+    </div>
+
+
+    {% if products %}
+
+
+                       <!-- ****** Right ******* -->
+               
+        <div class="col-sm-8 col-md-9">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+            </ul>
+
+            <div class="panel panel-default">
+            <div class="panel-body">
+
+                <center><h3><font color="#800040" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black">All Products</font></h3></center><br><br>
+
+                {% for product in products %}
+
+                    {% if product.is_activate == True %} 
+                        <div class="col-sm-8 col-lg-4">
+                            <div class="thumbnail">
+                            <div class="caption">
+
+                            <a href="{% url 'boutique:discover_product' product.id %}" method= "post">
+                                <img src="{{ product.product_logo.url }}" class="img-responsive" style="width: 300px; float: left; margin-right: 300px; height:200px" />
+                            </a>
+                                <h2>{{ product.product_name}}</h2>
+                                
+                                <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
+                                
+                                {{ product.shop.shop_name }}
+                                <h5 style="display:inline; float:right;"><span class="glyphicon glyphicon-user"></span> {{ product.shop.user.username}} </h5>
+                                
+                                <h3><span class="label label-warning">{{ product.product_price}} DT</span></h3>
+
+
+                                    <!--  Reactions -->
+
+                            {% include 'reactions/reaction.html' %}
+
+      
+                          <!--       <div display= inline-block>
+                                <a href="#"><span class="badge" id="unread-count">0</span>LIKE</a>
+                                <a href="#"><span class="badge" id="unread-count">0</span>wish</a>
+                                <a href="#"><span class="badge" id="unread-count">0</span>share</a>
+                                </div> -->
+                                          <!--   <li><a href="{% url 'inbox' %}"><span class="badge pull-right" id="unread-count">0</span> Inbox</a></li> -->
+                               
+
+                            
+                            </div>
+                            </div>
+                        </div>
+                    {% endif %}
+            
+        
+                {% endfor %}
+ <script src="{% static 'reaction/js/reactions.js' %}"></script>
+    {% else %}
+        <br><br><br><br><br>
+               
+        <div class="col-sm-8 col-md-9">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+               
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <center><FONT color="red"; size=5>There isn't any product activated now!<br>Please check it later<br>
+
+                    <img src={% static 'boutique/images/sad.png' %}>
+
+                    </FONT></center>
+
+                
+
+                    
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+    {% endif %}
+
+
+                <!-- Pagination -->
+
+
+
+<nav-aa >
+
+{% if products.has_other_pages %}
+    <ul class="pagination">
+        {% if products.has_previous %}
+          <li><a href="?page={{ products.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&laquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in products.paginator.page_range %}
+          {% if products.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li><a href="?page={{ i }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if products.has_next %}
+          <li><a href="?page={{ products.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">&raquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>  
+{% endif %}
+    
+
+</nav-aa >
+
+<script type="text/javascript">
+    $("#ex2").slider({});
+</script>
+
+
+{% endblock %}
+
