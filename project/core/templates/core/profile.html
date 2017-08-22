@@ -17,8 +17,9 @@
 
 {% endblock extrahead %}
 {% block main %}
-<br><br>
+
   <div class="page-header">
+  <br><br>
     <h1>{{ page_user.profile.get_screen_name }} {% if page_user.get_full_name %}<small>({{ page_user.username }})</small>{% endif %}</h1>
   </div>
   
@@ -45,6 +46,7 @@
             <li class="active"><a  href="#1b" data-toggle="tab">{% trans 'Last Posts' %}</a></li>
             <li><a href="#2b" data-toggle="tab">Activity by type</a></li>
             <li><a href="#3b" data-toggle="tab">Activity by day</a></li>
+            
             <li><a href="{% url 'create_post' %}">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Post
             </a></li>
@@ -53,7 +55,7 @@
             <div class="tab-content">
               <div class="tab-pane active" id="1b">
                 <div class="post">
-                  {% include 'posts/discover_post.html' with post=post %}
+                  {% include 'posts/discover_post.html' with posts=posts %}
                 </div>
               </div>  
             </div>

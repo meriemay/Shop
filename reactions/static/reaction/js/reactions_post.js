@@ -6,7 +6,7 @@ $(function () {
       var postId = $this.attr('data-id');
 
       $.ajax({
-          url: '/post/commenter/' + postId,
+          url: '/reaction_post/' + postId,
           data: {
               'reaction': type
           },
@@ -29,8 +29,11 @@ $(function () {
                   $this.parent().siblings('#dislikes').text('0');
                       
               }
-              $this.parent().siblings('#comments').text(data.comment + 'comments');
-                }
+              if (data.comment > 0){
+              $this.parent().siblings('#comments').text(data.comment + 'comments' );}
+              else {$this.parent().siblings('#comments').text(data.comment);}
+                         
+              }
     });
 });
 });

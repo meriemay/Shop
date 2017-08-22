@@ -14,7 +14,7 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['product_name', 'product_price', 'product_logo','product_pic1', 'product_pic2','product_pic3', 'product_type', 'category', 'description', 'quantite', 'is_activate']
+        fields = ['product_name', 'product_price', 'product_logo','product_pic1', 'product_pic2','product_pic3', 'product_type', 'gender', 'category', 'age', 'description', 'tags', 'quantite', 'is_activate']
 
 
 class UserForm(forms.ModelForm):
@@ -29,5 +29,5 @@ class CommercantForm(forms.ModelForm):
 
     class Meta:
         model = Commercant
-        fields = ['name', 'description', 'picture', 'tel', ]
+        fields = ['name', 'description', 'picture', 'tel' ]
 

@@ -1,6 +1,6 @@
 
   $(function () {
-    $("#send_post").submit(function (e) {
+    /*$("#send_post").submit(function (e) {
       e.preventDefault();
       var data=new FormData(this);
       $.ajax({
@@ -16,7 +16,7 @@
         }
       });
       return false;
-    });
+    });*/
   });
 
 

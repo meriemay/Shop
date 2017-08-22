@@ -6,7 +6,9 @@ from . import views
 app_name = 'boutique'
 
 urlpatterns = [
+    url(r'^filtrer_age/$', views.filtrer_age, name='filtrer_age'),
     url(r'^filtrer/$', views.filtrer, name='filtrer'),
+
     url(r'^discover/(?P<category>[\w\-]+)/$', views.filtrer, name='filtrer'),
     url(r'^$', views.index, name='index'),
     url(r'^register/$', views.register, name='register'),

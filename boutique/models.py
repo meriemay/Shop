@@ -51,6 +51,13 @@ class Product(models.Model):
 
     Hand_Made = 'Hand_Made'
     Vintage = 'Vintage'
+    Baby = 'Baby'
+    Child = 'Child'
+    Teenager = 'Teenager'
+    Adult = 'Adult'
+    Male = 'Male'
+    Female = 'Female'
+            
 
     shop = models.ForeignKey(Shop, on_delete=models.CASCADE)
     product_name = models.CharField(max_length=250)
@@ -70,9 +77,28 @@ class Product(models.Model):
             (Vintage, 'Vintage')
         ),default=None
     )
+    gender = models.CharField(
+        max_length=15,
+        blank=True,
+        choices=(
+            (Male, 'Male'),
+            (Female, 'Female')
+        ),default=None
+    )
+    age = models.CharField(
+        max_length=10,
+        blank=True,
+        choices=(
+            (Baby, 'Baby'),
+            (Child, 'Child'),
+            (Teenager, 'Teenager'),
+            (Adult, 'Adult')
+        ),default=None
+    )
     description = models.TextField(max_length=250, default=None)
     quantite = models.IntegerField(default=None)
     date = models.DateField(auto_now_add=True, null=True)
+    tags = models.TextField(max_length=250, blank=True, default=None,null=True)
 
     def __str__(self):
         return self.product_name

@@ -3,11 +3,18 @@
         position: absolute;
 
         bottom: 0px;
-        left: 190px;
-        top: 820px;
+        left: 350px;
+        top: 550px;
     }
 
-    </style>
+
+    .picture {
+      width: 20px;
+      border-radius: 5px;
+      float: left;
+    }
+
+</style>
 {% extends 'boutique/base.html' %}
 {% block posts_active %}active{% endblock %}
 
@@ -87,7 +94,7 @@
     {% if posts %}
 
 
-                       <!-- ****** Right ******* -->
+                       <!-- ****** Right : Posts ******* -->
                
         <div class="col-sm-8 col-md-9">
             <ul class="nav nav-pills" style="margin-bottom: 10px;">
@@ -101,33 +108,71 @@
                 {% for post in posts %}
 
                    
-                        <div class="col-sm-8 col-lg-4">
+                        <div class="col-sm-8 col-lg-3">
                             <div class="thumbnail">
                             <div class="caption">
+                                <img src="{{ post.user.profile.get_picture }}" class="picture">
 
+                                <a href="{% url 'user_posts' post.user %}"> <B> {{ post.user.profile.get_screen_name }}</B></a><br><br>
                            
-                                <img src="{{ post.picture_attached.url }}" class="img-responsive" style="width: 300px; float: left; margin-right: 300px; height:200px" />
+                                {% if post.picture_attached %}
+                                    <img src="{{ post.picture_attached.url }}" class="img-responsive" style="width: 300px; float: left; margin-right: 300px; height:200px" />
+                                {% else %}
+                                    <img src="{{ post.category.picture.url }}" class="img-responsive" style="width: 300px; float: left; margin-right: 300px; height:200px" />
+                                {% endif %}
                            
                                 <h2>{{ post.user_post}}</h2>
                                 
                                 <img src="{{ post.category.picture.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
                                 
-                                {{ post.category.label }}
-                                <h5 style="display:inline; float:right;"><span class="glyphicon glyphicon-user"></span> {{ post.category.label}} </h5>
+                                <B>{{ post.category.label }}</B>
                                 
-                                <h3><span class="label label-warning">{{ post.category.label}} DT</span></h3>
+                                <br><br>
 
 
-                                    <!--  Reactions -->
+                             <!-- Reactions: 'like' and 'dislike' -->
 
+                                        <!-- LIKE -->
+                                <div class="col-md-1">
+                                    <button data-id="{{ post.id }}" data-reaction="like" class="reaction-post like" data-toggle="tooltip" title="like">
+                                     <span class="glyphicon glyphicon-thumbs-up"></span>
+                                      <!-- <img src="{% static 'reaction/images/like.png' %}" alt="" width="25" height="25" data-toggle="tooltip" title="like" data-reaction="like"> --> 
+                                    </button>
+                                </div>    
+                                <span class="col-md-1" id="likes"></span>
+
+
+                                         <!--  DISLIKE -->
+                                <div class="col-md-1">
+                                    <button data-id="{{ post.id }}" data-reaction="dislike" class="reaction-post dislike" data-toggle="tooltip" title="dislike">
+                                    <span class="glyphicon glyphicon-thumbs-down"></span>
+
+                                      <!-- <img src="{% static 'reaction/images/dislike.jpg' %}" alt="" width="28" height="25" data-toggle="tooltip" title="dislike" data-id="{{ post.id }}"> -->
+
+                                    </button>
+                                    
+                                </div>
+                                <span class="col-md-1" id="dislikes" ></span>
+                                 
+                                <br><br>
+                               
+                                
+                                                <!-- COMMENT -->
+                                
+                                <div class="col-md-1" style="display:inline-block">
+                                    <button><a href="{% url 'commenter' post.id%}"><span class="glyphicon glyphicon-comment"></span> </a>
+                                    </button>
+                                    <br>
+                                </div> 
+                                <br>  
                            
 
       
-                          <!--       <div display= inline-block>
+                                <!-- <div display= inline-block>
                                 <a href="#"><span class="badge" id="unread-count">0</span>LIKE</a>
                                 <a href="#"><span class="badge" id="unread-count">0</span>wish</a>
                                 <a href="#"><span class="badge" id="unread-count">0</span>share</a>
-                                </div> -->
+                                </div>  -->
                                           <!--   <li><a href="{% url 'inbox' %}"><span class="badge pull-right" id="unread-count">0</span> Inbox</a></li> -->
                                
 
@@ -151,7 +196,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
 
-                    <center><FONT color="red"; size=5>There isn't any post!<br>Please check it later<br>
+                    <center><FONT color="red"; size=5>There isn't any post in this category!<br>
 
                     <img src={% static 'boutique/images/sad.png' %}>
 
@@ -203,7 +248,7 @@
 
 
 
-
+<script src="{% static 'reaction/js/reactions_post.js' %}"></script>
 
 {% endblock %}
 

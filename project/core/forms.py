@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 
 class ProfileForm(forms.ModelForm):
+    
 
     first_name = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'}),
@@ -28,11 +29,21 @@ class ProfileForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control'}),
         max_length=50,
         required=False)
+    age = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        max_length=10,
+        required=False)
 
+    gender = forms.CharField(
+        
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        max_length=15,
+        required=False)
+    
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'job_title',
-                  'email', 'url', 'location', ]
+                  'email', 'url', 'location','age', 'gender']
 
 
 class ChangePasswordForm(forms.ModelForm):

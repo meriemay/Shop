@@ -15,13 +15,21 @@ from django.utils.encoding import python_2_unicode_compatible
 
 @python_2_unicode_compatible
 class Profile(models.Model):
+    Male = 'Male'
+    Female = 'Female'  
+   
     user = models.OneToOneField(User)
     location = models.CharField(max_length=50, null=True, blank=True)
     url = models.CharField(max_length=50, null=True, blank=True)
     job_title = models.CharField(max_length=50, null=True, blank=True)
-
+    gender = models.CharField(max_length=15,choices=((Male, 'Male'),(Female, 'Female')))
+    age = models.CharField(max_length=10, null=True, blank=True)
+   
+    
     class Meta:
         db_table = 'auth_profile'
+            
+
 
     def __str__(self):
         return self.user.username

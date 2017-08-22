@@ -1,8 +1,13 @@
 <style type="text/css"> 
 .my_post{
 overflow-y: scroll;
-max-height: 350px;
+max-height: 200px;}
+.picture {
+width: 30px;
+border-radius: 5px;
+float: left;
 }
+
 </style>
 
 {% extends 'boutique/base.html' %}
@@ -12,13 +17,36 @@ max-height: 350px;
 
 {% load i18n %}
 {% load humanize %}
-
+{% block head %}
+  <link href="{% static 'css/post.css' %}" rel="stylesheet">
+{% endblock head %}
 {% block body %}
 <br><br><br><br>
 <div class="container-fluid">
 
     <div class="row">
-        <div class="col-sm-offset-4 col-sm-12 col-md-4">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                <br>
+                    <img src="{{ post.user.profile.get_picture }}" height="35px" width="35px">
+                    <h3 style="display:inline-block"><B>{{ post.user.profile.get_screen_name }}</B></h3>
+                    <h4>{{post.user_post}}</h4><br>
+                    <center><img src="{{post.picture_attached.url}}" height="200px" width="200px"></center>
+                    
+                    <img src="{{post.category.picture.url}}" height="35px" width="35px" >
+                    <B>{{post.category.label}}</B><br><br>
+                    <small>{{ post.date|naturaltime }}</small>
+        <div>
+          
+        </div>
+       
+    
+                </div>
+
+            </div>
+    </div>
+        <div class=" col-sm-12 col-md-4">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h3>Add a New Comment</h3>
@@ -33,7 +61,7 @@ max-height: 350px;
                       
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" data-id="{{ post.id }}" data-reaction="comment" class="reaction-post comment" >Submit</button>
+                                <button data-id="{{ post.id }}" data-reaction="comment" class="reaction-post comment" >Submit</button>
                             </div>
                         </div>
 
@@ -41,8 +69,8 @@ max-height: 350px;
                 </div>
             </div>
         
-
-       
+            
+            
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="post">
@@ -51,7 +79,7 @@ max-height: 350px;
                     <ul class="all-posts" >
                       <div class="my_post">
 
-                        {{ post.comment_set.count }}
+                        
   
                         {% include 'posts/discover_comment.html' with comments=post.comments.all %}
                          
@@ -72,6 +100,6 @@ max-height: 350px;
 </div>
 
       
-
+<script src="{% static 'reaction/js/reactions_post.js' %}"></script>
 
 {% endblock %}

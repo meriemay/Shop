@@ -43,14 +43,25 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
+              {% if user.profile.age is None %}
               <a class="navbar-brand" href="{% url 'boutique:filtrer' %}">Shop</a>
+              {% else %}
+              <a class="navbar-brand" href="{% url 'boutique:filtrer_age' %}">Shop</a>
+              {% endif %}
             </div>
 
                       <!-- Items of NavBar -->
 
             <div class="collapse navbar-collapse" id="topNavBar">
               <ul class="nav navbar-nav">
-                <li class="{% block produits_active %}{% endblock %}"><a href="{% url 'boutique:filtrer' %}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>&nbsp;All Products</a></li>
+                <li class="{% block produits_active %}{% endblock %}">
+
+                {% if user.profile.age is None %}
+                <a href="{% url 'boutique:filtrer' %}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>&nbsp;All Products</a></li>
+                {% else %}
+                <a href="{% url 'boutique:filtrer_age' %}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>&nbsp;All Products</a></li>
+                {% endif %}
+
                 <li class="{% block shops_active %}{% endblock %}"><a href="{% url 'boutique:index' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; My Shop</a></li>
                 <li class="{% block products_active %}{% endblock %}"><a href="{% url 'boutique:products' 'all' %}"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>&nbsp;My Products</a></li>
                 <li>
@@ -61,7 +72,7 @@
 
          
               <ul class="nav navbar-nav navbar-right">
-              <li><a href="{% url 'hi' %}"><span class="glyphicon glyphicon-th"> Home</a></li>
+              <li><a href="{% url 'home_user' %}"><span class="glyphicon glyphicon-th"> Home</a></li>
                 <li>
                   <a href="{% url 'profile' user.username %}"><span class="glyphicon glyphicon-user"></span>  {{ user.profile.get_screen_name }}</a>
                 </li>

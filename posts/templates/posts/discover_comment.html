@@ -1,12 +1,21 @@
+<style>
+li.commentaire .picture {
+  width: 40px;
+  border-radius: 5px;
+  float: left;
+}
+</style>
+
 {% load i18n %}
 
-
 {% for comment in comments %}
-      <li class="clearfix" >
-     
+      <li class="commentaire" >
+     <img src="{{ user.profile.get_picture }}" class="picture">
       <B>{{comment.user}}</B>
         <div class="panel-body">
         {{comment.user_comment}}<br>
+       
+
        
         </div>
         <small>{{ comment.date }}</small>

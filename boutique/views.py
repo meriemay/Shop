@@ -5,9 +5,11 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q, Max, Min
 import re
+from project.authentication.models import Profile
 from django.shortcuts import redirect
 from .forms import ShopForm, ProductForm, UserForm, CommercantForm
 from .models import Shop, Product, Category, User, Commercant
+
 
 
 
@@ -196,6 +198,7 @@ def register(request):
         username = request.POST['username']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
+        
         if password1 == password2:
             user = User.objects.create_user(username=username,
                                             email=username,
@@ -290,9 +293,26 @@ def activate_product(request,shop_id, id_product):
 #     except EmptyPage:
 #         products = paginator.page(paginator.num_pages)
 #     return render(request, 'boutique/discover.html', {'products': products, 'page': page})
+def filtrer_age(request):
+    
+    age = int(request.user.profile.age)
+    if age<3 :
+        type_age='baby'
+    elif age>3 and age<12:
+        type_age='child'
+    elif age>12 and age<21:
+        type_age='teenager'
+    else:
+        type_age='adult'
+    products1 = Product.objects.filter(age=type_age)
+    products2 = Product.objects.all().exclude(age=type_age)
+
+    return render(request, 'boutique/discover.html', {'products1': products1, 'products2': products2})
+
 
 
 def filtrer(request, category=''):
+
     products = Product.objects.filter(is_activate=True)
     all_products = Product.objects.filter(is_activate=True)
     categories = Category.objects.all()
@@ -321,7 +341,7 @@ def filtrer(request, category=''):
         query_list = re.sub("[^\w]", " ", query).split()
         q = Q()
         for word in query_list:
-            q |= Q(product_name__icontains=word) | Q(description__icontains=word)
+            q |= Q(product_name__icontains=word) | Q(description__icontains=word) | Q(tags__icontains=word)
         products = products.filter(q)
         header1 = 'Search = ' + query
 
@@ -342,6 +362,37 @@ def filtrer(request, category=''):
             product_type_label = 'Hand_Made'
         print(Product.Vintage)
         header3= 'Product type = '+ str(product_type_label)
+
+
+
+    if ('gender' in request.GET):
+        gender =request.GET.get('gender')
+
+        q = Q(gender = gender)
+        products = products.filter(q)
+        if gender == 'Male':
+            gender_label = 'Male'
+        elif gender == 'Female':
+            gender_label = 'Female'
+        print(Product.Male)
+        header4= 'gender = '+ str(gender_label)
+
+
+
+    if ('age' in request.GET):
+        age =request.GET.get('age')
+
+        q = Q(age = age)
+        products = products.filter(q)
+        if age == 'Baby':
+            age_label = 'Baby'
+        elif age == 'Child':
+            age_label = 'Child'
+        elif age == 'Teenager':
+            age_label = 'Teenager'
+        elif age == 'Adult':
+            age_label = 'Adult'
+        header5= 'age = '+ str(age_label)
 
 
     if ('ordering' in request.GET):
@@ -378,6 +429,7 @@ def filtrer(request, category=''):
         'header2': header2,
         'header3': header3,
         'header4': header4,
+        'header5': header5,
         'counter': counter,
         'products': products,
         'categories': categories,

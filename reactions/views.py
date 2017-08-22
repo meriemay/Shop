@@ -82,7 +82,7 @@ def react_post(request, pk):
     reaction = request.GET.get('reaction')
     has_reacted = Reaction_post.objects.filter(user=request.user, post=post).count() == 1
     reaction_choices = Reaction_post.get_choices()
-    #obj=product.reaction_set.filter(reaction="smile").count()
+   
     if has_reacted:
         reaction_obj = request.user.reaction_post_set.get(post=post)
         if reaction in reaction_choices:
@@ -108,8 +108,9 @@ def react_post(request, pk):
        
         
     data['count'] = post.reaction_post_set.count()
+
     print(reaction)
-    #data['count_smile']= obj
+   
 
     like= Reaction_post.objects.filter(post= post, reaction='like').count()
     dislike= Reaction_post.objects.filter(post= post, reaction='dislike').count()

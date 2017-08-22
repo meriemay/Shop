@@ -43,6 +43,8 @@
         <a href="#" class="forgot-password">Forgot password?</a>
       </div>
     </form>
+
+    
     <form method="post" action="{% url 'boutique:register'%}" class="email-signup">
     {% csrf_token %}
       <div class="u-form-group">
@@ -54,6 +56,7 @@
       <div class="u-form-group">
         <input name="password2" type="password" placeholder="Confirm Password"/>
       </div>
+      
       <div class="u-form-group">
         <button type="submit">Sign Up</button>
       </div>

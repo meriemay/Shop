@@ -16,7 +16,7 @@ urlpatterns = [
     url(r'^reaction_post/(?P<pk>\d+)$', reactions_views.react_post, name='react_post'),
     url(r'^admin/', admin.site.urls),
     url(r'^boutique/', include('boutique.urls')),
-        url(r'^post/', include('posts.urls')),
+    url(r'^post/', include('posts.urls')),
 
     url(r'^', include('boutique.urls')),
    	url(r'^messages/', include('project.messenger.urls')),

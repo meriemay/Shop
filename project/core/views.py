@@ -48,7 +48,7 @@ def network(request):
 def profile(request, username):
     page_user = User.objects.get(username=username)
     all_feeds = Feed.get_feeds().filter(user=page_user)
-    posts = Post.objects.all()
+    posts = Post.objects.filter(user=request.user)
     paginator = Paginator(all_feeds, FEEDS_NUM_PAGES)
     feeds = paginator.page(1)
     from_feed = -1
@@ -97,6 +97,7 @@ def settings(request):
             user.email = form.cleaned_data.get('email')
             user.profile.url = form.cleaned_data.get('url')
             user.profile.location = form.cleaned_data.get('location')
+            user.profile.age = form.cleaned_data.get('age')
             user.save()
             messages.add_message(request,
                                  messages.SUCCESS,

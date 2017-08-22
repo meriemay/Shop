@@ -22,7 +22,12 @@ max-height: 350px;
       <B>{{post.category.label}}</B>
         <div class="panel-body">
         {{post.user_post}}<br>
+        {% if post.picture_attached %}
         <img src="{{post.picture_attached.url}}" height="200px" width="200px">
+        {% else %}
+        <img src="{{post.category.picture.url}}" height="200px" width="200px">
+
+        {% endif %}
         </div>
         <small>{{ post.date|naturaltime }}</small>
         <div>

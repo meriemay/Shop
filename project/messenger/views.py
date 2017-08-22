@@ -19,6 +19,7 @@ def inbox(request):
     conversations = Message.get_conversations(user=request.user)
     active_conversation = None
     messages = None
+    products = None
     if conversations:
         conversation = conversations[0]
         active_conversation = conversation['user'].username

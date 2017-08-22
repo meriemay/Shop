@@ -35,10 +35,10 @@ class Post(models.Model):
 	user_post = models.TextField(max_length=255, null=True, blank=True)
 	date = models.DateTimeField(auto_now_add=True)
 	category = models.ForeignKey(Category_post, on_delete=models.CASCADE, null=True,
-        blank=True)
+        blank=False, default='2')
 
 	def __str__(self):
-		return self.user_post
+		return self.user_post 
 
 	class Meta:
 		ordering = ('-date',)
@@ -53,6 +53,9 @@ class Comment(models.Model):
 	user_post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True, related_name='comments')
 	date = models.DateTimeField(auto_now_add=True)
 	user_comment = models.TextField(max_length=255)
+
+	class Meta:
+		ordering = ('-date',)
 
 	def __str__(self):
 		return self.user_comment

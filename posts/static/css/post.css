@@ -78,3 +78,9 @@ ul.all-posts .user-picture {
 .markdown {
   margin-bottom: .8em;
 }
+
+li.commentaire .picture {
+  width: 40px;
+  border-radius: 5px;
+  float: left;
+}
