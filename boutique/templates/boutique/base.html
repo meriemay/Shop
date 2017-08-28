@@ -18,9 +18,14 @@
     <title>{% block title %}Shop{% endblock %}</title>
     {% load staticfiles %}
     
+     
         <!-- Crousel product_pics -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
@@ -29,6 +34,9 @@
 
     <script src="{% static 'js/send_post.js' %}"></script>
     <script src="{% static 'js/send_comment.js' %}"></script>
+    <script src="{% static 'boutique/js/main.js' %}"></script>
+
+
 
     
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -37,13 +45,17 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'boutique/style.css' %}"/>
 
-    <link rel="stylesheet" href="css/style.css">
+   
 
     <link href="{% static 'css/post.css' %}" rel="stylesheet">
 
         
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+
 
     <link rel="stylesheet" href="{% static 'boutique/css/bootstrap-slider.min.css' %}">
 
@@ -53,6 +65,7 @@
     "></script>
             <!-- Gender Button -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     
 </head>
 <body>
@@ -64,13 +77,13 @@
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
             </button>
-            {% if user.profile.age is None %}
+            <a class="navbar-brand" href="{% url 'boutique:filtrer' %}">Shop</a>
+           <!--  {% if user.profile.age is None %}
             <a class="navbar-brand" href="{% url 'boutique:filtrer' %}">Shop</a>
             {% else %}
             <a class="navbar-brand" href="{% url 'boutique:filtrer_age' %}">Shop</a>
-            {% endif %}
+            {% endif %} -->
         </div>
 
         <!-- Items -->
@@ -78,18 +91,25 @@
         <div class="collapse navbar-collapse" id="topNavBar">
             <ul class="nav navbar-nav">
                 <li class="{% block produits_active %}{% endblock %}">
-                {% if user.profile.age is None %}
+                <a href="{% url 'boutique:filtrer' %}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>&nbsp;All Products</a></li>
+                <!-- {% if user.profile.age is None %}
                 <a href="{% url 'boutique:filtrer' %}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>&nbsp;All Products</a></li>
                 {% else %}
                 <a href="{% url 'boutique:filtrer_age' %}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>&nbsp;All Products</a></li>
-                {% endif %}
+                {% endif %} -->
 
                 <li class="{% block shops_active %}{% endblock %}"><a href="{% url 'boutique:index' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; My Shop</a></li>
-                <li class="{% block products_active %}{% endblock %}"><a href="{% url 'boutique:products' 'all' %}"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>&nbsp;My Products</a></li>
+                <li><a href="{% url 'home_user' %}"><span class="glyphicon glyphicon-th"> Home</a></li>
+                
+   <!--               
+                <li class="{% block products_active %}{% endblock %}"><a href="{% url 'boutique:products' 'all' %}"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>&nbsp;My Products</a></li> -->
                 <li>
+                {% if user.profile.get_screen_name %}
                   <a href="#" id="notifications" data-container="body" data-toggle="popover" data-placement="bottom" title="Notifications">
                   <span class="glyphicon glyphicon-bell"></span>
-                  </a></li>
+                  </a>
+                    {% endif %}
+                  </li>
                
 
 
@@ -119,7 +139,6 @@
         
 
                 <!-- Add Shop -->
-
             <ul class="nav navbar-nav navbar-right">
                 <!-- <li>
                     <a href="{% url 'boutique:create_shop' %}">
@@ -127,27 +146,48 @@
                     </a>
                 </li> -->
 
-
+                        <!--  Log in -->
+                {% if not user.profile.get_screen_name %}
+                <li>
+                <a href="{% url 'boutique:login_user' %}">
+                <i class="fa fa-user-circle fa-2x" aria-hidden="true"></i> Login </a>
+                </li>
+                {% endif %}
             <!--  Log out -->
-                <li><a href="{% url 'home_user' %}"><span class="glyphicon glyphicon-th"> Home</a></li>
+                
                 <li>
+                {% if user.profile.get_screen_name %}
+
                   <a href="{% url 'profile' user.username %}"><span class="glyphicon glyphicon-user"></span>  {{ user.profile.get_screen_name }}</a>
-                </li>
-                <li>
-                    <a>{{user.profile.age}}</a>
+                {% endif %}
+
                 </li>
 
+           <!--      <li>
+                {% if user.profile.get_screen_name %}
+
+                  <a href="{% url 'boutique:create_wishlist' %}"><i class="fa fa-shopping-basket fa-lg" aria-hidden="true"></i></a>
+
+                {% endif %}
+
+                </li>  -->
+                
+              
+                 {% if user.profile.get_screen_name %}
                 <li><a href="{% url 'inbox' %}"><span class="badge pull-right" id="unread-count">0</span> Inbox</a></li>
+                 
                 <li>
                   <a href="{% url 'settings' %}"><span class="glyphicon glyphicon-cog"></span>{% trans 'Account Settings' %}</a>
                 </li>
 
                 <li>
+            
                     <a href="{% url 'boutique:logout_user' %}">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
                     </a>
+               
                 </li>
-
+                 {% endif %}
                 
             </ul>
         </div>

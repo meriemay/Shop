@@ -144,14 +144,6 @@ def filtrer_posts(request, category=''):
         counter.append((c, posts.filter(category=c).count()))
 
 
-    page = request.GET.get('page')
-    paginator = Paginator(posts, 4)
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
 
     context = {
         'header1': header1,
@@ -159,7 +151,7 @@ def filtrer_posts(request, category=''):
         'counter': counter,
         'posts': posts,
         'categories': categories,
-        'page': page
+      
     }
 
-    return render(request, 'posts/discover_all_posts.html',{'posts': posts, 'page':page, 'categories': categories, 'counter': counter})
+    return render(request, 'posts/discover_all_posts.html',{'posts': posts, 'categories': categories, 'counter': counter})

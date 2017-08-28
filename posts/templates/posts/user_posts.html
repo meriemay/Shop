@@ -24,16 +24,16 @@
 {% block body %}
 <body>
 <br><br><br><br>
-<div class="shops-container container-fluid">
+<div class="shops-container container-fluid" >
 
     
         <div class="row"> 
 
                         <!-- ******* left ******* -->
                   
-            <div class="col-sm-4 col-md-3">
-            <div class="panel panel-default">
-                <div class="panel-body">
+            <div class="col-sm-4 col-md-3" style="position:fixed">
+            <div class="panel panel-default" >
+                <div class="panel-body" >
 
                 <div class="center-block">
                     {% if header1 %} <h4>    {{ header1 }}</h4> {% endif%}
@@ -57,10 +57,11 @@
                         </div>
                     </div> -->
                     </form>
-                
+                    
+
 
                             <!-- Gategories -->
-                    <font face="Brush Script Std, Brush Script MT, cursive" size="6px" color="black">Categories</font>
+                    <font face="Brush Script Std, Brush Script MT, cursive" size="6px" color="black">Post categories</font>
                     <div class="list-group, center-block">
                      {% for category, value in counter %}
                     <a href="{% url 'user_posts' username category.label %}?{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="list-group-item list-group-item-info"><img src="{{category.picture.url}}" style="width: 50px; float: left; margin-right: 20px; height:25px" > {{ category.label  }}<span class="badge">{{value}}</span></a>{% endfor %}</div></br>
@@ -96,19 +97,19 @@
 
                        <!-- ****** Right : Posts ******* -->
                
-        <div class="col-sm-8 col-md-9">
+        <div class="col-md-offset-4 col-sm-8 col-md-6">
             <ul class="nav nav-pills" style="margin-bottom: 10px;">
             </ul>
 
             <div class="panel panel-default">
             <div class="panel-body">
-
+           
                 <br><br>
 
                 {% for post in posts %}
 
                    
-                        <div class="col-sm-8 col-lg-3">
+                        <div class="col-sm-8 col-lg-12">
                             <div class="thumbnail">
                             <div class="caption">
                                 <img src="{{ post.user.profile.get_picture }}" class="picture">
@@ -182,21 +183,21 @@
             
         
                 {% endfor %}
+                
  
     {% else %}
         <br><br><br><br><br>
                
-        <div class="col-sm-8 col-md-9">
+        <div class="col-md-offset-3 col-sm-8 col-md-9">
             <ul class="nav nav-pills" style="margin-bottom: 10px;">
                
             </ul>
 
-            <div class="panel panel-default">
-                <div class="panel-body">
+            
 
                     <center><FONT color="red"; size=5>There isn't any post in this category!<br>
 
-                    <img src={% static 'boutique/images/sad.png' %}>
+                    <img src={% static 'boutique/images/sad.gif' %}>
 
                     </FONT></center>
 
@@ -204,8 +205,7 @@
 
                     
 
-                </div>
-            </div>
+                
         </div>
 
     </div>

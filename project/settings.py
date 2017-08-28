@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'reactions.apps.ReactionsConfig',
     'notifications.apps.NotificationsConfig', 
     'posts.apps.PostsConfig',
+    'album.apps.AlbumConfig',
+    'rest_framework',
     
 
     
@@ -171,3 +173,10 @@ ALLOWED_SIGNUP_DOMAINS = ['*']
 
 FILE_UPLOAD_TEMP_DIR = '/tmp/'
 FILE_UPLOAD_PERMISSIONS = 0o644
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication', ),
+        
+}

@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^boutique/', include('boutique.urls')),
     url(r'^post/', include('posts.urls')),
+    url(r'^album/', include('album.urls')),
 
     url(r'^', include('boutique.urls')),
    	url(r'^messages/', include('project.messenger.urls')),
@@ -44,7 +45,9 @@ urlpatterns = [
     url(r'^notifications/check/$', notifications_views.check_notifications,
         name='check_notifications'),
     
-
+    url(r'^api/notifications/', include("notifications.api.urls", namespace='notifications-api')),
+    url(r'^api/messenger/', include("project.messenger.api.urls", namespace='messenger-api')),
+    url(r'^api/reactions/', include("reactions.api.urls", namespace='reactions-api')),
     
 
 ]

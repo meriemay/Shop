@@ -25,29 +25,7 @@
                             <!-- View Details -->
                             <a href="{% url 'boutique:detail' shop.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
                             
-                            <!-- Delete Shop-->
-                            <form action="{% url 'boutique:delete_shop' shop.id %}" method="post" style="display: inline;">
-                                {% csrf_token %}
-                                <input type="hidden" name="shop_id" value="{{ shop.id }}" />
-                                <button type="submit" class="btn btn-default btn-sm">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </button>
-                            </form>
-
-                            <!-- Edit product -->
-                            <form action="{% url 'boutique:edit_shop' shop.id %}" method="get" style="display: inline;">
-                                {% csrf_token %}
-                                <input type="hidden" name="shop_id" value="{{ shop.id }}" />
-                                <button type="submit" class="btn btn-info btn-sm">
-                                    <span class="glyphicon glyphicon-edit"></span> Edit
-                                </button>
-                            </form>
-
-                            <!-- Favorite Album -->
-                           <!--  <a href="{% url 'boutique:favorite_shop' shop.id %}" class="btn btn-default btn-sm btn-favorite" role="button">
-                                <span class="glyphicon glyphicon-star {% if shop.is_favorite %}active{% endif %}"></span>
-                            </a>
- -->
+                        
                         </div></center>
                     </div>
                 </div>
@@ -82,7 +60,7 @@
                               <img src="{{ product.product_logo.url }}" alt="" class="img-responsive" style="width: 500px; height: 350px">
                               </center>
                             </div>
-                           {% endfor%}      
+                        {% endfor%}      
 
                         
                         </div>

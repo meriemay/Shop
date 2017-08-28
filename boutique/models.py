@@ -4,6 +4,13 @@ from django.conf import settings
 from django.utils import timezone
 
 
+class Wishlist(models.Model):
+    user = models.ForeignKey(User)
+    name = models.CharField(max_length=250, default=None)
+
+    def __str__(self):
+        return self.name
+
 
 class Commercant(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
@@ -23,10 +30,11 @@ class Shop(models.Model):
     shop_name = models.CharField(max_length=500)
     shop_logo = models.FileField(null=True)
     is_favorite = models.BooleanField(default=False)
+    visitors = models.ManyToManyField(User,related_name='user')
+    Msg_Parametre = models.TextField(default='Can I help you?')
 
     def __str__(self):
         return self.shop_name + ' - ' + self.username
-
 
 
 class Category(models.Model):
@@ -37,9 +45,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.label
-
-
-
 
 
 
@@ -99,6 +104,7 @@ class Product(models.Model):
     quantite = models.IntegerField(default=None)
     date = models.DateField(auto_now_add=True, null=True)
     tags = models.TextField(max_length=250, blank=True, default=None,null=True)
+    is_favorite = models.BooleanField(default=False)
 
     def __str__(self):
         return self.product_name

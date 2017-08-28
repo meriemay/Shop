@@ -1,6 +1,13 @@
 from django.contrib.auth.models import User
 from django import forms
-from .models import Shop, Product, Commercant
+from .models import Shop, Product, Commercant, Wishlist
+
+
+class WishListForm(forms.ModelForm):
+
+    class Meta:
+        model = Wishlist
+        fields = ['name']
 
 
 class ShopForm(forms.ModelForm):

@@ -21,6 +21,9 @@
                             <h3>No image to display</h3>
                         {% endif %}
                     </a>
+                    <!-- <a href="{% url 'boutique:favorite' product.id %}" class="btn-favorite"><span class="glyphicon glyphicon-star {% if product.is_favorite %}active{% endif %}"></span></a> -->
+
+                    
 
                     <br><br>
 
@@ -62,7 +65,8 @@
                     
                    <br><br><br>
                     <a href="{% url 'new_message2' product.id %}" class="btn btn-primary btn-sm" role="button"><span class="glyphicon glyphicon-envelope"> Contact Shop</span></a>
-                    <br>
+                   <!--  <a href="{% url 'boutique:favorite' product.id %}" class="btn-favorite">add to wish list</a>
+                    <br> -->
                     
                     
                     
@@ -76,7 +80,8 @@
         
               <div class="jumbotron">
                 <center><h1><font style="color:#990099">{{product.product_name}}</font></h1></center>   
-                <p>{{ product.description }}</p><br>
+                <p>{{ product.description }}</p>
+                <p>Product for {{product.gender}}</p>
                 <hr size="1">
                 <p><span class="glyphicon glyphicon-home"></span><font style="color:#b30000"> Shop</font> :  <img src="{{ product.shop.shop_logo.url }}" style="width: 50px;height: 40px"/> {{ product.shop.shop_name }}</p>
 
@@ -84,7 +89,7 @@
                     <p><span class="glyphicon glyphicon-pushpin"><font style="color:#b30000"> Type</font> : {{ product.product_type }}</span></p>
                     <p><span class="glyphicon glyphicon-euro"><font style="color:#b30000"> Price</font> : <span class="label label-warning">{{ product.product_price }} €</span></span></p>
                     
-                    <p><span class="glyphicon glyphicon-calendar"><font style="color:#b30000"> Creation Date</font> : {{ product.date }}</span></p></font>
+                    
                     <p align="right">Thanks for your visit <span class="glyphicon glyphicon-heart"></span><span class="glyphicon glyphicon-heart"></span><span class="glyphicon glyphicon-heart"></span> </p>
               </div>
 

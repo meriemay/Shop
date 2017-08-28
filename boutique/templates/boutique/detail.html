@@ -46,26 +46,30 @@
                     <table class="table">
                         <thead>
                         <tr bgcolor="#cce6ff"><font color="red">
-                        
-                            <th>Name</th>
+                            <th><center>Product</center></th>
+                             <th>Price</th>
                             <th>Category</th>
-                            <th>Price</th>
-                            <th>Logo</th>
+                           
+                            <th>Creation date</th>
+                            
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for product in shop.product_set.all %}
                             <tr>
-                                <td>{{ product.product_name }}</td>
+                                <td><center>{{ product.product_name }}<br><img src="{{ product.product_logo.url }}" style="width: 200px; height: 200px" class="img-responsive"></center></td>
+                                 <td>{{ product.product_price }} DT</td>
                                 <td>{{ product.category }}<br>({{ product.product_type }})</td>
-                                <td>{{ product.product_price }} DT</td>
+                                <td>{{ product.date }}</td>
+                               
+                               
                                    <!--  <a target="_blank" href="{{ product.product_logo.url }}">
                                         <button type="button" class="btn btn-success btn-xs">
                                             <span class="glyphicon glyphicon-play"></span>&nbsp; Play
                                         </button>
                                     </a> -->
-                                <td><img src="{{ product.product_logo.url }}" style="width: 200px; height: 200px" class="img-responsive"></td>
+                                
                                
                                     <!-- <a href="{% url 'boutique:favorite' product.id %}" class="btn-favorite"><span class="glyphicon glyphicon-star {% if product.is_favorite %}active{% endif %}"></span></a> -->
 

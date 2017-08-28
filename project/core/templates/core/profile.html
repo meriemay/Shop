@@ -19,7 +19,7 @@
 {% block main %}
 
   <div class="page-header">
-  <br><br>
+  <br>
     <h1>{{ page_user.profile.get_screen_name }} {% if page_user.get_full_name %}<small>({{ page_user.username }})</small>{% endif %}</h1>
   </div>
   
@@ -43,20 +43,48 @@
       <!--Bar graphic chart-->
       <div class="col-md-9">
           <ul class="nav nav-pills">
+          {% if page_user.profile.get_screen_name == user.username %} 
             <li class="active"><a  href="#1b" data-toggle="tab">{% trans 'Last Posts' %}</a></li>
-            <li><a href="#2b" data-toggle="tab">Activity by type</a></li>
-            <li><a href="#3b" data-toggle="tab">Activity by day</a></li>
+            <li>
+            {% else %}
+            <li><a href="{% url 'user_posts' page_user.profile.user %}" class="btn btn-primary  " role="button"> <B><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Posts of {{ page_user.profile.user.profile.get_screen_name }} </B></a></li>
+            {% endif %}
+
+
+            
+            <li><a href="{% url 'detail_album'  page_user.profile.user.id %}" class="btn btn-primary " role="button">
+            <span class="glyphicon glyphicon-camera" aria-hidden="true"> Albums</span>  
+            </a></li>
+           
+         
+            <!-- <li><a href="#3b" data-toggle="tab">Activity by day</a></li> -->
+            
+            {% if page_user.profile.get_screen_name == user.username %}           
+            <li><a href="{% url 'create_album' %}">
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Album
+            </a></li>
             
             <li><a href="{% url 'create_post' %}">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Post
             </a></li>
+            {% endif %}
+            
           </ul>
+          {% if page_user.profile.get_screen_name == user.username %} 
           <div class="col-sm-4 col-md-7">
             <div class="tab-content">
               <div class="tab-pane active" id="1b">
                 <div class="post">
                   {% include 'posts/discover_post.html' with posts=posts %}
                 </div>
+              </div>  
+            </div>
+          </div>
+          {% endif %}
+          <div class="col-sm-4 col-md-7">
+            <div class="tab-content">
+              <div class="tab-pane active" id="2b">
+                 
               </div>  
             </div>
           </div>
@@ -89,3 +117,5 @@
     <script src="{% static 'js/send_post.js' %}"></script>
   </div>
 {% endblock main %}
+
+

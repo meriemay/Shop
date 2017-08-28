@@ -37,7 +37,7 @@
             <div class="panel panel-default">
             <div class="panel-body">
 
-                <h3><a href="{% url 'boutique:filtrer' %}"><font color="#800040" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black"> Products</font></a></h3>
+                <h3><a href="{% url 'boutique:filtrer' %}"><font color="#800040" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black"><i class="fa fa-external-link" aria-hidden="true"></i> Products</font></a></h3>
 
                 {% for product in products %}
 
@@ -86,7 +86,7 @@
 
                     <center><FONT color="red"; size=5>There isn't any product activated now!<br>Please check it later<br>
 
-                    <img src={% static 'boutique/images/sad.png' %}>
+                    <img src={% static 'boutique/images/sad.gif' %}>
 
                     </FONT></center>
 
@@ -107,14 +107,14 @@
      <div class="col-sm-8 col-md-12">
           
            
-            <h3><a href="{% url 'filtrer_posts'%}"><font color="#800040" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black">Posts</font></a></h3>
+            <h3><a href="{% url 'filtrer_posts'%}"><font color="#800040" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black"><i class="fa fa-external-link" aria-hidden="true"></i> Posts</font></a></h3>
             {% for post in posts %}
             <div class="col-sm-8 col-lg-3">
             <div class="thumbnail">
             <div class="caption">
             <img src="{{ post.user.profile.get_picture }}" class="picture">
 
-                <a href="{% url 'user_posts' post.user.username %}"> <B> {{ post.user.profile.get_screen_name }}</B></a><br>
+                <a href="{% url 'user_posts' post.user.username %}"> <B> {{ post.user.profile.get_screen_name }} : posts</B></a><br>
                 {{post.user_post}}<br>
                 {% if post.picture_attached %}
                 <img src="{{ post.picture_attached.url }}" class="img-responsive" style="width: 200px; float: left; margin-right: 200px; height:100px" />

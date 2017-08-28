@@ -100,6 +100,7 @@ def new2(request, prod_id):
     if request.method == 'POST':
         from_user = request.user
         prod=Product.objects.get(id=prod_id)
+
         touser=User.objects.get(shop__product=prod)
         to_user_username=touser.username
         # to_user_username = request.POST.get('to')

@@ -23,6 +23,7 @@
                     {% if header2 %} <h4>    {{ header2 }}</h4> {% endif%}
                     {% if header3 %} <h4>    {{ header3 }}</h4> {% endif%}
                     {% if header4 %} <h4>    {{ header4 }}</h4>{% endif%}
+                    {% if header5 %} <h4>    {{ header5 }}</h4>{% endif%}
                 </div>
 
                                 <!-- Search -->
@@ -36,13 +37,9 @@
                     {% endfor %}
                      </form>
 
-                    <!-- <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="search">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                        </div>
-                    </div> -->
-                   
+
+
+
                 
 
                                 <!-- Gategories -->
@@ -51,16 +48,6 @@
                      {% for category, value in counter %}
                     <a href="{% url 'boutique:filtrer' category.label %}?{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="list-group-item list-group-item-info">{{ category.label  }}<span class="badge">{{value}}</span></a>{% endfor %}</div></br>
  
-
-
-                    <!-- <div class="center-block">
-                        <ul>
-                    {% for category, value in counter %}
-                      <li><a href="{% url 'boutique:filtrer' category.label %}?{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">{{ category.label  }} <span class="badge">{{value}}</span>
-
-                      </a></li>
-                    {% endfor %}
-                        </ul></div></br> -->
 
 
 
@@ -84,61 +71,6 @@
                         <button type="submit" class="btn btn-primary btn-block" ><span class="glyphicon glyphicon-usd" ></span>    filter by price</button>
                         <br>
                         </form> </center>
-
-
-                    <!-- <form method="GET" class="price-filter" action="{{ request.path }}">         
-                        {% for key, value in request.GET.items %}
-                        {% if key != 'page' and key != 'min' and key != 'max' %}
-                        <div class="u-form-group">
-                            <input type="hidden" name="{{key}}" value="{{value}}" />
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-
-                        
-                                          
-                            
-                            <input name="min" id="sliderLink" type="text" placeholder="min price" class="center-block"/>
-                                              
-                            
-                            <input name="max" id="sliderLink2" type="text" placeholder="max price" class="center-block"/>   
-                            
-                        
-                            <br><br>
-                            <button type="submit" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-usd" ></span>    filter by price</button>
-                            <br>
-                            </form> -->
-                              
-                        
-                            
-                        
-                           
-
-                            
-                                                        
-                        
-                        <!-- <div class="row">
-                       
-                            <div class="u-form-group">            
-                                <br><br>
-                                  <input name="min" id="sliderLink" type="text" placeholder="min price" class="center-block" />
-                            </div>
-
-                              
-                            
-                              
-                            
-                            <div class="u-form-group">
-                                <input name="max" id="sliderLink2" type="text" placeholder="max price" class="center-block" />   
-                            </div>
-                        </div>
-
-                            <div class="u-form-group">
-                                <button type="submit" class="center-block"><span class="glyphicon glyphicon-usd"></span>  filter by price</button>
-                                <br>
-                            </div> -->
-                            
-
                     
                         <!-- filter by type -->
 
@@ -242,11 +174,11 @@
     </div>
 
 
-    {% if products or products1 or products2 %}
+ 
 
 
                        <!-- ****** Right ******* -->
-               
+       {% if products  %}        
         <div class="col-sm-8 col-md-9">
             <ul class="nav nav-pills" style="margin-bottom: 10px;">
             </ul>
@@ -256,7 +188,7 @@
 
                 <center><h3><font color="#800040" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black">All Products</font></h3></center><br><br>
 
-        {% if products  %}
+        
                 {% for product in products%}
 
                     {% if product.is_activate == True %} 
@@ -270,11 +202,14 @@
                                 <h2>{{ product.product_name}}</h2>
                                 
                                 <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
+                             
+                                <a href="{% url 'boutique:discover_shop' product.shop.id %}">{{ product.shop.shop_name }}</a><br>
+
                                 
-                                {{ product.shop.shop_name }}
-                                <h5 style="display:inline; float:right;"><span class="glyphicon glyphicon-user"></span> {{ product.shop.user.username}} </h5>
+                               
+                                <a href="{% url 'profile' product.shop.user.username %}"><h5 style="display:inline; float:right;"><span class="glyphicon glyphicon-user"></span> {{ product.shop.user.username}} </h5></a>
                                 
-                                <h3><span class="label label-warning">{{ product.product_price}} DT</span></h3>
+                                <h3 ><B>{{ product.product_price}} DT</B></h3>
 
 
                                     <!--  Reactions -->
@@ -298,124 +233,30 @@
             
         
                 {% endfor %}
-                {% endif %}
-
-
-        {% if products1  %}
-                {% for product in products1 %}
-
-                    {% if product.is_activate == True %} 
-                        <div class="col-sm-8 col-lg-4">
-                            <div class="thumbnail">
-                            <div class="caption">
-
-                            <a href="{% url 'boutique:discover_product' product.id %}" method= "post">
-                                <img src="{{ product.product_logo.url }}" class="img-responsive" style="width: 300px; float: left; margin-right: 300px; height:200px" />
-                            </a>
-                                <h2>{{ product.product_name}}</h2>
-                                
-                                <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
-                                
-                                {{ product.shop.shop_name }}
-                                <h5 style="display:inline; float:right;"><span class="glyphicon glyphicon-user"></span> {{ product.shop.user.username}} </h5>
-                                
-                                <h3><span class="label label-warning">{{ product.product_price}} DT</span></h3>
-
-
-                                    <!--  Reactions -->
-
-                            {% include 'reactions/reaction.html' %}
-
-      
-                          <!--       <div display= inline-block>
-                                <a href="#"><span class="badge" id="unread-count">0</span>LIKE</a>
-                                <a href="#"><span class="badge" id="unread-count">0</span>wish</a>
-                                <a href="#"><span class="badge" id="unread-count">0</span>share</a>
-                                </div> -->
-                                          <!--   <li><a href="{% url 'inbox' %}"><span class="badge pull-right" id="unread-count">0</span> Inbox</a></li> -->
-                               
-
-                            
-                            </div>
-                            </div>
-                        </div>
-                    {% endif %}
             
-        
-                {% endfor %}
-                {% endif %}
+             
 
-
-            {% if products2 %}
-                {% for product in products2 %}
-
-                    {% if product.is_activate == True %} 
-                        <div class="col-sm-8 col-lg-4">
-                            <div class="thumbnail">
-                            <div class="caption">
-
-                            <a href="{% url 'boutique:discover_product' product.id %}" method= "post">
-                                <img src="{{ product.product_logo.url }}" class="img-responsive" style="width: 300px; float: left; margin-right: 300px; height:200px" />
-                            </a>
-                                <h2>{{ product.product_name}}</h2>
-                                
-                                <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
-                                
-                                {{ product.shop.shop_name }}
-                                <h5 style="display:inline; float:right;"><span class="glyphicon glyphicon-user"></span> {{ product.shop.user.username}} </h5>
-                                
-                                <h3><span class="label label-warning">{{ product.product_price}} DT</span></h3>
-
-
-                                    <!--  Reactions -->
-
-                            {% include 'reactions/reaction.html' %}
-
-      
-                          <!--       <div display= inline-block>
-                                <a href="#"><span class="badge" id="unread-count">0</span>LIKE</a>
-                                <a href="#"><span class="badge" id="unread-count">0</span>wish</a>
-                                <a href="#"><span class="badge" id="unread-count">0</span>share</a>
-                                </div> -->
-                                          <!--   <li><a href="{% url 'inbox' %}"><span class="badge pull-right" id="unread-count">0</span> Inbox</a></li> -->
-                               
-
-                            
-                            </div>
-                            </div>
-                        </div>
-                    {% endif %}
-            
-        
-                {% endfor %}
-                {% endif %}
-
- <script src="{% static 'reaction/js/reactions.js' %}"></script>
-
+       
     {% else %}
     
-        <br><br><br><br><br>
+        <br><br><br><br>
                
         <div class="col-sm-8 col-md-9">
             <ul class="nav nav-pills" style="margin-bottom: 10px;">
                
             </ul>
 
-            <div class="panel panel-default">
-                <div class="panel-body">
+            
 
                     <center><FONT color="red"; size=5>There isn't any product activated now!<br>Please check it later<br>
-
-                    <img src={% static 'boutique/images/sad.png' %}>
+               
+                    <img src="{% static 'boutique/images/sad.gif' %}"/>
 
                     </FONT></center>
 
                 
 
-                    
-
-                </div>
-            </div>
+           
         </div>
 
     </div>

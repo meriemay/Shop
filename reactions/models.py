@@ -28,7 +28,7 @@ class Reaction(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True, null=True)
     reaction = models.CharField(max_length=255, blank=True, null=True, 
-    	choices=(('NORMAL', 'normal'), ('SMILE', 'smile'), ('LOVE', 'love'), ('WISH', 'wish'),))
+    	choices=(('normal', 'normal'), ('smile', 'smile'), ('love', 'love'), ('wish', 'wish'),))
 
     class Meta:
         unique_together = (('user', 'product'),)

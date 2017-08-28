@@ -1,0 +1,91 @@
+{% extends 'boutique/base.html' %}
+{% block products_active %}active{% endblock %}
+
+{% load staticfiles %}
+
+{% block body %}
+<br><br><br>
+<div class="shops-container container-fluid">
+
+    
+        <div class="row"> 
+
+                         <!-- ******* left ******* -->
+    {% if products  %} 
+            <div class="col-sm-4 col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img src="{{ products.first.shop.shop_logo.url }}" class="img-responsive" style="width: 300px; height: 300px; float: left; margin-right: 10px;" />
+                        <h2>{{ shop.shop_name }}</h2><br>
+                        <p>Contact us and we'll get back to you within 24 hours</p>
+                        <a href="{% url 'new_message' %}"><span class="glyphicon glyphicon-envelope"> Contact Shop</span></a><br>
+                        <a href="{% url 'detail_album'  shop.user.id %}" ><span class="  glyphicon glyphicon-camera" aria-hidden="true"> Albums </span> </a>
+                         <a href="{% url 'profile' shop.user.username %}"><h5><span class="glyphicon glyphicon-user"> owner </span></h5></a>
+                    </div>
+                </div>
+            </div>
+            
+
+    
+
+
+                       <!-- ****** Right ******* -->
+    
+        <div class="col-sm-8 col-md-9">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+            </ul>
+
+            <div class="panel panel-default">
+            <div class="panel-body">
+
+                <center><h3><font color="black" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black">Shop of</font> <font color="#800040" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black"> {{shop.user.username}} </font></h3></center><br><br>
+     
+                {% for product in products %}
+
+                    {% if product.is_activate == True %} 
+                        <div class="col-sm-8 col-lg-4">
+                            <div class="thumbnail">
+                            <div class="caption">
+
+                            <a href="{% url 'boutique:discover_product' product.id %}" method= "post">
+                                <img src="{{ product.product_logo.url }}" class="img-responsive" style="width: 300px; float: left; margin-right: 300px; height:200px" />
+                            </a>
+                                <h2>{{ product.product_name}}</h2>
+                                
+                                <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
+                             
+                                <a href="{% url 'boutique:discover_shop' product.shop.id %}">{{ product.shop.shop_name }}</a>
+                               
+                               
+                                
+                                <h3 style="float:right"><B>{{ product.product_price}} DT</B></h3>
+                                <br><br><br>
+
+
+                                    <!--  Reactions -->
+
+                            {% include 'reactions/reaction.html' %}
+
+      
+                          <!--       <div display= inline-block>
+                                <a href="#"><span class="badge" id="unread-count">0</span>LIKE</a>
+                                <a href="#"><span class="badge" id="unread-count">0</span>wish</a>
+                                <a href="#"><span class="badge" id="unread-count">0</span>share</a>
+                                </div> -->
+                                          <!--   <li><a href="{% url 'inbox' %}"><span class="badge pull-right" id="unread-count">0</span> Inbox</a></li> -->
+                               
+
+                            
+                            </div>
+                            </div>
+                        </div>
+                    {% endif %}
+            
+        
+                {% endfor %}
+                {% endif %}
+
+</div></div>
+
+
+{% endblock %}
