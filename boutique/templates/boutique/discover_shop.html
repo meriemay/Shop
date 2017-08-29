@@ -64,7 +64,31 @@
 
                                     <!--  Reactions -->
 
-                            {% include 'reactions/reaction.html' %}
+                                {% include 'reactions/reaction.html' %}
+                                <a  class="btn btn-default btn-md" role="button" href="javascript:void(0)" onclick="document.getElementById('{{ product.id }}').style.display='block';document.getElementById('{{ product.product_name }}').style.display='block'">
+                           <span class="glyphicon glyphicon-star" style="color: gold"></span>
+                       </a>
+
+                    <div id="{{ product.id }}" class="white_content">
+
+                        <a href="javascript:void(0)" onclick="document.getElementById('{{ product.id }}').style.display='none';document.getElementById('{{ product.product_name }}').style.display='none'">
+                        <span class="glyphicon glyphicon-remove-circle pull-right" style="color: gold"></span></a>
+                            <form role="form" action="{% url 'boutique:add_to_wishlist' product.id %}" method="post">
+                            {% csrf_token %}
+                            <div>
+                            <fieldset data-role="controlgroup">
+                                {% for wl,val in counter2 %}
+                                    <div class="row center-block">
+                                        <input style="margin-top: -1px" type="checkbox" name="{{ wl.name }}" id="checkbox-1a">
+                                        <label>       {{ wl.name }} <span class="badge">{{val}}</span> </label>
+                                    </div>
+                                {% endfor %}
+                            </fieldset>
+                            <br><br>
+                            <button style="margin-top: -20px;margin-bottom: -40px" type="submit" id="btnsub" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-btn-icon-left ui-icon-check">Submit</button>
+                            </div>
+                            </form>
+                    </div>
 
       
                           <!--       <div display= inline-block>
@@ -83,6 +107,7 @@
             
         
                 {% endfor %}
+                 <script src="{% static 'reaction/js/reactions.js' %}"></script>
                 {% endif %}
 
 </div></div>

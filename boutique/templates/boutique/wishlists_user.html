@@ -1,0 +1,30 @@
+{% extends 'boutique/base.html' %}
+{% block title %}Add a New Wishlist{% endblock %}
+{% block shops_active %}active{% endblock %}
+
+{% block body %}
+<br><br><br><br>
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul>
+                        <h3>wishlists</h3>
+                		{% for wishlist in wishlists_user %}
+                        <li><a href="{% url 'boutique:discover_wishlist' wishlist.id %}">{{wishlist.name}} : {{wishlist.user.username}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+       
+        {% include 'boutique/wishlist_products.html' %}
+          
+    </div>
+</div>
+
+{% endblock %}

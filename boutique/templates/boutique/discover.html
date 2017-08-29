@@ -23,7 +23,6 @@
                     {% if header2 %} <h4>    {{ header2 }}</h4> {% endif%}
                     {% if header3 %} <h4>    {{ header3 }}</h4> {% endif%}
                     {% if header4 %} <h4>    {{ header4 }}</h4>{% endif%}
-                    {% if header5 %} <h4>    {{ header5 }}</h4>{% endif%}
                 </div>
 
                                 <!-- Search -->
@@ -36,10 +35,6 @@
                            {% endif %}
                     {% endfor %}
                      </form>
-
-
-
-
                 
 
                                 <!-- Gategories -->
@@ -48,9 +43,6 @@
                      {% for category, value in counter %}
                     <a href="{% url 'boutique:filtrer' category.label %}?{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}" class="list-group-item list-group-item-info">{{ category.label  }}<span class="badge">{{value}}</span></a>{% endfor %}</div></br>
  
-
-
-
 
                              <!--  Filter by price -->
                         <center>
@@ -174,11 +166,11 @@
     </div>
 
 
- 
+    {% if products  %}
 
 
                        <!-- ****** Right ******* -->
-       {% if products  %}        
+               
         <div class="col-sm-8 col-md-9">
             <ul class="nav nav-pills" style="margin-bottom: 10px;">
             </ul>
@@ -188,7 +180,7 @@
 
                 <center><h3><font color="#800040" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black">All Products</font></h3></center><br><br>
 
-        
+    
                 {% for product in products%}
 
                     {% if product.is_activate == True %} 
@@ -203,9 +195,7 @@
                                 
                                 <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
                              
-                                <a href="{% url 'boutique:discover_shop' product.shop.id %}">{{ product.shop.shop_name }}</a><br>
-
-                                
+                                <a href="{% url 'boutique:discover_shop' product.shop.id %}">{{ product.shop.shop_name }}</a>
                                
                                 <a href="{% url 'profile' product.shop.user.username %}"><h5 style="display:inline; float:right;"><span class="glyphicon glyphicon-user"></span> {{ product.shop.user.username}} </h5></a>
                                 
@@ -215,6 +205,31 @@
                                     <!--  Reactions -->
 
                             {% include 'reactions/reaction.html' %}
+
+                            <a  class="btn btn-default btn-md" role="button" href="javascript:void(0)" onclick="document.getElementById('{{ product.id }}').style.display='block';document.getElementById('{{ product.product_name }}').style.display='block'">
+                           <span class="glyphicon glyphicon-star" style="color: gold"></span>
+                       </a>
+
+                    <div id="{{ product.id }}" class="white_content">
+
+                        <a href="javascript:void(0)" onclick="document.getElementById('{{ product.id }}').style.display='none';document.getElementById('{{ product.product_name }}').style.display='none'">
+                        <span class="glyphicon glyphicon-remove-circle pull-right" style="color: gold"></span></a>
+                            <form role="form" action="{% url 'boutique:add_to_wishlist' product.id %}" method="post">
+                            {% csrf_token %}
+                            <div>
+                            <fieldset data-role="controlgroup">
+                                {% for wl,val in counter2 %}
+                                    <div class="row center-block">
+                                        <input style="margin-top: -1px" type="checkbox" name="{{ wl.name }}" id="checkbox-1a">
+                                        <label>       {{ wl.name }} <span class="badge">{{val}}</span> </label>
+                                    </div>
+                                {% endfor %}
+                            </fieldset>
+                            <br><br>
+                            <button style="margin-top: -20px;margin-bottom: -40px" type="submit" id="btnsub" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-btn-icon-left ui-icon-check">Submit</button>
+                            </div>
+                            </form>
+                    </div>
 
       
                           <!--       <div display= inline-block>
@@ -233,13 +248,15 @@
             
         
                 {% endfor %}
-            
              
 
-       
+
+
+ <script src="{% static 'reaction/js/reactions.js' %}"></script>
+
     {% else %}
     
-        <br><br><br><br>
+        <br><br><br><br><br>
                
         <div class="col-sm-8 col-md-9">
             <ul class="nav nav-pills" style="margin-bottom: 10px;">
@@ -249,8 +266,8 @@
             
 
                     <center><FONT color="red"; size=5>There isn't any product activated now!<br>Please check it later<br>
-               
-                    <img src="{% static 'boutique/images/sad.gif' %}"/>
+
+                    <img src={% static 'boutique/images/sad.gif' %}>
 
                     </FONT></center>
 

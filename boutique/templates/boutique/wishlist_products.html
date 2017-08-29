@@ -1,0 +1,46 @@
+
+
+                         <!-- ******* left ******* -->
+    {% if products  %} 
+           
+
+
+                       <!-- ****** Right ******* -->
+    
+        <div class="col-sm-8 col-md-9">
+        
+
+            <div class="panel panel-default">
+            <div class="panel-body">
+
+                <center><h3><i class="fa fa-heart" aria-hidden="true"></i><i class="fa fa-heart" aria-hidden="true"></i><font color="black" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black"> Wishlist of</font> <font color="#800040" face="Brush Script Std, Brush Script MT, cursive" size="200px" color="black"> {{wishlist.user.username}}</font> <i class="fa fa-heart" aria-hidden="true"></i><i class="fa fa-heart" aria-hidden="true"></i></h3></center><br><br>
+     
+                {% for product in products %}
+
+                    {% if product.is_activate == True %} 
+                        <div class="col-sm-8 col-lg-4">
+                            <div class="thumbnail">
+                            <div class="caption">
+
+                            <a href="{% url 'boutique:discover_product' product.id %}" method= "post">
+                                <img src="{{ product.product_logo.url }}" class="img-responsive" style="width: 300px; float: left; margin-right: 300px; height:200px" />
+                            </a>
+                                <h2>{{ product.product_name}}</h2>
+                                
+                                <img src="{{ product.shop.shop_logo.url }}" class="img-responsive" style="width: 20px; height: 20px; float: left; margin-right: 10px;" />
+                             
+                                <a href="{% url 'boutique:discover_shop' product.shop.id %}">{{ product.shop.shop_name }}</a>
+                               <a href="{% url 'profile' product.shop.user.username %}"><h5 style="display:inline; float:right;"><span class="glyphicon glyphicon-user"></span> {{ product.shop.user.username}} </h5></a><br>
+                               
+                                
+                                <h3 ><B>{{ product.product_price}} DT</B></h3>
+                                                            
+                            </div>
+                            </div>
+                        </div>
+                    {% endif %}
+            
+        
+                {% endfor %}
+       
+                {% endif %}

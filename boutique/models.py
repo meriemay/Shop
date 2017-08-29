@@ -4,12 +4,7 @@ from django.conf import settings
 from django.utils import timezone
 
 
-class Wishlist(models.Model):
-    user = models.ForeignKey(User)
-    name = models.CharField(max_length=250, default=None)
 
-    def __str__(self):
-        return self.name
 
 
 class Commercant(models.Model):
@@ -113,6 +108,13 @@ class Product(models.Model):
         ordering = ('-date',)
 
 
+class Wishlist(models.Model):
+    user = models.ForeignKey(User)
+    product = models.ManyToManyField(Product,blank=True, null=True)
+    name = models.CharField(max_length=250, default=None)
+
+    def __str__(self):
+        return self.name
 
 class Picture(models.Model):
     product = models.ForeignKey(Product)

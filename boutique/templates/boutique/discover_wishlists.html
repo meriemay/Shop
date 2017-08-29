@@ -11,11 +11,13 @@
         <div class="col-sm-12 col-md-7">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h3>wishlists of {{ user.username }}</h3>
+                <ul>
+                    <h3>All wishlists</h3>
             		{% for wishlist in wishlists %}
-                    {{wishlist.name}}
-                    {% endfor %}
               
+                    <li><a href="{% url 'boutique:discover_wishlist' wishlist.id %}">{{wishlist.name}}:{{wishlist.user.username}}</a></li>
+                    {% endfor %}
+                </ul>
                 </div>
             </div>
         </div>

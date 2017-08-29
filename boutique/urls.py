@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^login_user/$', views.login_user, name='login_user'),
     url(r'^logout_user/$', views.logout_user, name='logout_user'),
     url(r'^(?P<shop_id>[0-9]+)/$', views.detail, name='detail'),
-    url(r'^(?P<product_id>[0-9]+)/favorite/$', views.favorite, name='favorite'),
+
     url(r'^product/(?P<filter_by>[a-zA_Z]+)/$', views.products, name='products'),
     url(r'^create_shop/$', views.create_shop, name='create_shop'),
     url(r'^create_wishlist/$', views.create_wishlist, name='create_wishlist'),
@@ -27,8 +27,10 @@ urlpatterns = [
     url(r'^shop/discover_shop/(?P<shop_id>[0-9]+)/$', views.discover_shop, name='discover_shop'),
     url(r'^filtrer_age/$', views.filtrer_age, name='filtrer_age'),
     
-   # url(r'^(?P<product_id>[0-9]+)/favorite/$', views.favorite, name='favorite'),
-   # url(r'^user_wishlists/(?P<username>[^/]+)?$', views.user_wishlists, name='user_wishlists'),
-   # url(r'^(?P<prod_id>[0-9]+)/add_to_wishlist/$', views.add_to_wishlist, name='add_to_wishlist'),
+
+    url(r'^all_wishlists/(?P<username>[^/]+)?$', views.all_wishlists, name='all_wishlists'),
+    url(r'^user_wishlists/(?P<username>[^/]+)?$', views.user_wishlists, name='user_wishlists'),
+    url(r'^(?P<prod_id>[0-9]+)/add_to_wishlist/$', views.add_to_wishlist, name='add_to_wishlist'),
+    url(r'^discover_wishlist/(?P<wishlist_id>[0-9]+)/$', views.discover_wishlist, name='discover_wishlist'),
 
 ]

@@ -104,34 +104,24 @@ def detail(request, shop_id):
         return render(request, 'boutique/detail.html', {'shop': shop, 'user': user})
 
 def discover_product(request, product_id):
+    counter2=[]
+    products = Product.objects.filter(is_activate=True)
     product = get_object_or_404(Product, pk=product_id)
-    return render(request, 'boutique/discover_product.html', {'product': product})
+    if request.user.is_authenticated():
+        wish_lists = Wishlist.objects.filter(user = request.user)
+        for w in wish_lists:
+            counter2.append((w, products.filter(wishlist= w).count()))
+    return render(request, 'boutique/discover_product.html', {'product': product, 'counter2': counter2})
 
-
-
-
-
-
-def favorite(request, product_id):
-    if not request.user.is_authenticated():
-        return render(request, 'boutique/login.html')
-    else:
-        product = get_object_or_404(Product, pk=product_id)
-        try:
-            if product.is_favorite:
-                Product.is_favorite = False
-            else:
-                Product.is_favorite = True
-            product.save()
-        except (KeyError, Product.DoesNotExist):
-            return JsonResponse({'success': False})
-        else:
-            return JsonResponse({'success': True})
 
 
 def create_wishlist(request):
     user =request.user
-    wishlists = Wishlist.objects.filter(user=user)
+    wishlists_user = Wishlist.objects.filter(user=user)
+    products = None
+    if wishlists_user.first():
+        products = Product.objects.filter(wishlist=wishlists_user.first())
+
     if not request.user.is_authenticated():
         return render(request, 'boutique/login.html')
     else:
@@ -141,24 +131,39 @@ def create_wishlist(request):
             wishlist.user = request.user
            
             wishlist.save()
-            return render(request, 'boutique/discover_wishlists.html', {'wishlist': wishlist, 'wishlists': wishlists})
+            return render(request, 'boutique/wishlists_user.html', {'wishlist': wishlist, 'wishlists_user': wishlists_user, 'products': products})
           
         context = {
-            "form": form,
-            
+            "form": form,     
         }
-         
-
-        return render(request, 'boutique/create_wishlist.html', context, {'wishlists': wishlists})
+        return render(request, 'boutique/create_wishlist.html', context, {'wishlists_user': wishlists_user})
 
 
 
-def user_wishlists(request, username):
-    
+def all_wishlists(request, username): 
     wishlists = Wishlist.objects.all()
-
-    print(wishlists)
     return render(request, 'boutique/discover_wishlists.html',{'wishlists': wishlists, 'username': username})
+ 
+
+def user_wishlists(request, username): 
+    wishlists_user = Wishlist.objects.filter(user__username=username)
+    wishlist = wishlists_user.first
+    products = None
+    if wishlists_user.first():
+        products = Product.objects.filter(wishlist=wishlists_user.first())
+
+    
+    return render(request, 'boutique/wishlists_user.html',{'wishlist': wishlist,'wishlists_user': wishlists_user, 'username': username, 'products': products})
+
+
+def discover_wishlist(request, wishlist_id):
+    user = request.user
+    wishlist = get_object_or_404(Wishlist, pk=wishlist_id)
+    wishlists_user = Wishlist.objects.filter(user=wishlist.user)
+    products = Product.objects.filter(wishlist=wishlist)
+
+    return render(request, 'boutique/wishlists_user.html', {'wishlist': wishlist, 'products': products, 'wishlists_user': wishlists_user, 'user': user, 'page_user': user,})   
+
 
 
 def add_to_wishlist(request, prod_id):
@@ -166,11 +171,9 @@ def add_to_wishlist(request, prod_id):
     prod = get_object_or_404(Product, pk=prod_id)
     wishlists = Wishlist.objects.filter(user=user)
 
+
     for w in wishlists:
         name = request.POST.get(w.name)
-        print(prod.name)
-        print(w.name)
-        print(name)
         if name:
             w.product.add(prod)
             w.save()
@@ -178,20 +181,20 @@ def add_to_wishlist(request, prod_id):
 
 
 
+def discover_shop(request, shop_id):
+    shop = get_object_or_404(Shop, pk=shop_id)
+    products = Product.objects.filter(shop=shop)
 
+    if 'search' in request.GET:
+        query = request.GET.get('search')
+        query_list = re.sub("[^\w]", " ", query).split()
+        q = Q()
+        for word in query_list:
+            q |= Q(product_name__icontains=word) | Q(description__icontains=word) | Q(tags__icontains=word)
+        products = products.filter(q)
+        header1 = 'Search = ' + query
+    return render(request, 'boutique/discover_shop.html', {'products': products, 'shop':shop})
 
-# def favorite_shop(request, shop_id):
-#     shop = get_object_or_404(Shop, pk=shop_id)
-#     try:
-#         if shop.is_favorite:
-#             shop.is_favorite = False
-#         else:
-#             shop.is_favorite = True
-#         shop.save()
-#     except (KeyError, Shop.DoesNotExist):
-#         return JsonResponse({'success': False})
-#     else:
-#         return JsonResponse({'success': True})
 
 
 def index(request):
@@ -251,6 +254,7 @@ def login_user(request):
     return render(request, 'boutique/login.html')
 
 
+
 def register(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -268,6 +272,7 @@ def register(request):
                     products = Product.objects.all()
                     return render(request, 'boutique/discover.html', {'products': products})
     return render(request, 'boutique/login.html')
+
 
 
 def products(request, filter_by):
@@ -312,6 +317,7 @@ def edit_product(request, shop_id, product_id):
     }
     return render(request,'boutique/product_form.html', context)
 
+
 def edit_shop(request, shop_id):
     boutique = get_object_or_404(Shop, pk=shop_id)
     form = ShopForm(request.POST or None, request.FILES or None, instance=boutique)
@@ -324,6 +330,7 @@ def edit_shop(request, shop_id):
         'form': form,
     }
     return render(request,'boutique/create_shop.html', context)
+
 
 def activate_product(request,shop_id, id_product):
     product = Product.objects.get(id=id_product)
@@ -339,18 +346,6 @@ def activate_product(request,shop_id, id_product):
     return render(request, 'boutique/detail.html', {'shop': shop})
 
 
-
-# def discover(request):
-#     products = Product.objects.all()
-#     page = request.GET.get('page')
-#     paginator = Paginator(products, 3)
-#     try:
-#         products = paginator.page(page)
-#     except PageNotAnInteger:
-#         products = paginator.page(1)
-#     except EmptyPage:
-#         products = paginator.page(paginator.num_pages)
-#     return render(request, 'boutique/discover.html', {'products': products, 'page': page})
 def filtrer_age(request, category=''):
     counter = []
     header1 = ''
@@ -509,9 +504,6 @@ def discover_shop(request, shop_id):
         header1 = 'Search = ' + query
 
    
-    
-
-
     return render(request, 'boutique/discover_shop.html', {'products': products, 'shop':shop})
 
 
@@ -522,11 +514,18 @@ def filtrer(request, category=''):
     all_products = Product.objects.filter(is_activate=True)
     categories = Category.objects.all()
     counter = []
+    counter2 = []
     header1 = ''
     header2 = ''
     header3 = ''
     header4 = ''
     header5 = ''
+    if request.user.is_authenticated():
+        wish_lists = Wishlist.objects.filter(user = request.user)
+        for w in wish_lists:
+            counter2.append((w, products.filter(wishlist= w).count()))
+
+
     var = request.GET.get("slider",'0,5000')
     value = var.split(',')
     min_slider = int(value[0]) 
@@ -638,10 +637,11 @@ def filtrer(request, category=''):
         'counter': counter,
         'products': products,
         'categories': categories,
-        'page': page
+        'page': page,
+        
     }
 
-    return render(request, 'boutique/discover.html', {'counter': counter,
+    return render(request, 'boutique/discover.html', {'counter': counter, 'counter2' : counter2,
         'products': products,
         'categories': categories,
         'page': page})

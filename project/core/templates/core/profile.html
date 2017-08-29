@@ -57,21 +57,28 @@
             </a></li>
            
          
-            <!-- <li><a href="#3b" data-toggle="tab">Activity by day</a></li> -->
+            <!-- <li><a href="#3b" data-toggle="ta
+            b">Activity by day</a></li> -->
             
             {% if page_user.profile.get_screen_name == user.username %}           
             <li><a href="{% url 'create_album' %}">
             <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;Add Album
             </a></li>
             
-            <li><a href="{% url 'create_post' %}">
+            <li><a href="{% url 'create_post' %}">      
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Post
             </a></li>
+            {% endif %}
+
+            {% if page_user.profile.get_screen_name == user.username %}
+            <li><a href="{% url 'boutique:user_wishlists' user.username %}"><i class="fa fa-user" aria-hidden="true"></i> My wishlists</a></li>
+            {% else %}
+            <li><a href="{% url 'boutique:user_wishlists' page_user.profile.user %}"><i class="fa fa-user" aria-hidden="true"></i> Wishlist of {{page_user.profile.user.profile.get_screen_name}}</a></li>
             {% endif %}
             
           </ul>
           {% if page_user.profile.get_screen_name == user.username %} 
-          <div class="col-sm-4 col-md-7">
+          <div class="col-sm-4 col-md-9">
             <div class="tab-content">
               <div class="tab-pane active" id="1b">
                 <div class="post">
